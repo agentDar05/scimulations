@@ -1,0 +1,19 @@
+.rotate-cubic {
+  border: 1px solid black;
+  width: 300px;
+  height: 300px;
+}
+.rotate-tetragonal {
+  border: 1px solid black;
+  width: 300px;
+  height: 300px;
+}
+.labelCubic{
+    margin-left: 125px;
+    margin-top: 10px;
+}
+.labelTetragonal{
+    margin-left: 125px;
+    margin-top: 10px;
+
+}

@@ -1,0 +1,26 @@
+{
+  "name": "scimulations",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "mocha": "11.0.1"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elsci-io/scimulations.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elsci-io/scimulations/issues"
+  },
+  "homepage": "https://github.com/elsci-io/scimulations#readme"
+}
