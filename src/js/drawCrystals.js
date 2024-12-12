@@ -4,7 +4,7 @@ import Vector from "./Vector.js";
 import StaticMath from "./StaticMath.js";
 import CanvasUtils from "./CanvasUtils.js";
 import Rotate from "./Rotate.js";
-import { tetragonalFigure, cubicFigure } from "./LatticeSystem.js";
+import { tetragonalFigure, cubicFigure, cubic, tetragonal } from "./LatticeSystem.js";
 const canvasHeight = 300;
 const canvasWidth = 300;
 const tetragonalCanvas = new Canvas2D(
@@ -18,9 +18,7 @@ const cubicCanvas = new Canvas2D(document.querySelector(".rotate-cubic"), {
   width: canvasWidth,
   height: canvasHeight,
 });
-const cubic = { sides: { x:  50, y: 50, z: 50 } };
-const tetragonal = { sides: { x: 50, y: 70, z: 50 } };
-export{cubic, tetragonal}
+
 const cubicCenter = new Vector([cubic.sides.x / 2, cubic.sides.y / 2]);
 const tetragonalCenter = new Vector([
   tetragonal.sides.x / 2,

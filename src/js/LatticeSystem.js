@@ -1,6 +1,7 @@
 import Matrix from "./Matrix.js";
 import Vector from "./Vector.js"
-import { cubic, tetragonal } from "./drawCrystals.js";
+const cubic = { sides: { x: 50, y: 50, z: 50 } };
+const tetragonal = { sides: { x: 50, y: 70, z: 50 } };
 const tetragonalFigure = [
   new Matrix([
     new Vector([0, 0, 0]),
@@ -89,4 +90,4 @@ const cubicFigure = [
     new Vector([0, cubic.sides.y, 0]),
   ]),
 ];
-export { tetragonalFigure, cubicFigure }
+export { tetragonalFigure, cubicFigure, cubic, tetragonal }
