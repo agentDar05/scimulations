@@ -1,52 +1,30 @@
-import Matrix from "./Matrix.js";
 import Canvas2D from "./Canvas2D.js";
 import Vector from "./Vector.js";
 import StaticMath from "./StaticMath.js";
 import CanvasUtils from "./CanvasUtils.js";
 import Rotate from "./Rotate.js";
 import Lean from "./Lean.js";
-import {
-  tetragonalFigure,
-  cubicFigure,
-  cubic,
-  tetragonal,
-} from "./LatticeSystem.js";
+import {cubic, cubicFigure, tetragonal, tetragonalFigure,} from "./LatticeSystem.js";
+
 let angle = 0.4;
 let rotationAxis = null;
-let rotatingCubic = Rotate.rotationMatrixMultiplyByArrayOfMatrices(
-  cubicFigure,
-  Rotate.getRotationMatrix(angle, angle, 0)
-);
-const rotationaxis1 = document.querySelector(".btn-rotate-axis");
-rotationaxis1.addEventListener("click", () => {
-  // const axis = new Vector([50, 50, 50])
-  // const angles = StaticMath.calcAngles(axis)
-  // const lean = Lean.leanFigure(angles.xy, angles.yz, angles.xz)
-  // const rotateCubic = Rotate.rotationMatrixMultiplyByArrayOfMatrices(
-  //   cubic,
-  //   lean.lean);
-  // CanvasUtils.drawFigure(
-  //   cubicCanvas,
-  //   StaticMath.moveFigure(rotateCubic, cubicCenter)
-  // );
-  rotationAxis = new Vector([50, 50, 50]);
+
+document.querySelector(".btn-rotate-axis").addEventListener("click", () => {
+  rotationAxis = new Vector([1, 1, 1]);
 });
 
 const canvasHeight = 300;
 const canvasWidth = 300;
-const tetragonalCanvas = new Canvas2D(
-  document.querySelector(".rotate-tetragonal"),
-  {
-    width: canvasWidth,
-    height: canvasHeight,
-  }
-);
+const tetragonalCanvas = new Canvas2D(document.querySelector(".rotate-tetragonal"), {
+  width: canvasWidth,
+  height: canvasHeight,
+});
 const cubicCanvas = new Canvas2D(document.querySelector(".rotate-cubic"), {
   width: canvasWidth,
   height: canvasHeight,
 });
 
-const cubicCenter = new Vector([cubic.sides.x / 2, cubic.sides.y / 2]);
+const cubicCenter = new Vector([cubic.sides.x / 2, cubic.sides.y / 2, cubic.sides.z/2]);
 
 const tetragonalCenter = new Vector([
   tetragonal.sides.x / 2,
@@ -57,28 +35,30 @@ const tetragonalCenter = new Vector([
 // tetragonal.sides.y
 // tetragonal.sides.z
 
+let rotatingAngle = 0;
 function drawFrame() {
   cubicCanvas.clear();
-  let rotatingCube = Rotate.rotationMatrixMultiplyByArrayOfMatrices(
-    cubicFigure,
-    Rotate.getRotationMatrix(angle, angle, 0)
-  );
+  let cubeToDraw = cubicFigure;
   if (rotationAxis) {
-
     const angles = StaticMath.calcAngles(rotationAxis);
-    const lean = Lean.leanFigure(angles.xy, angles.yz, angles.xz);
-    const rotateCubic = Rotate.rotationMatrixMultiplyByArrayOfMatrices(
-      cubicFigure,
-      lean.lean
-    );
-    rotatingCube = StaticMath.moveFigure(rotateCubic, cubicCenter);
-  }
-  CanvasUtils.drawFigure(
-    cubicCanvas,
-    StaticMath.moveFigure(rotatingCube, cubicCenter)
-  );
+    const leanAroundX = Lean.leanFigure(-angles.xy,0,0);
+    const leanAroundZ = Lean.leanFigure(0,0,-angles.xz);
+    const lean = leanAroundZ.lean.matrixMultiply(leanAroundX.lean)
+    const leanInverse = leanAroundX.inverse.matrixMultiply(leanAroundZ.inverse);
 
-  const rotatingTetragonal = Rotate.rotationMatrixMultiplyByArrayOfMatrices(
+    const rotationMatrix = Rotate.getRotationMatrix((rotatingAngle += .05), 0, 0);
+    cubeToDraw = Rotate.multiplyByArrayOfMatrices(
+            Rotate.multiplyByArrayOfMatrices(
+                    Rotate.multiplyByArrayOfMatrices(cubicFigure, lean),
+                    rotationMatrix
+            ),
+            leanInverse
+    );
+  }
+  cubeToDraw = Rotate.multiplyByArrayOfMatrices(cubeToDraw, Rotate.getRotationMatrix(angle, angle, 0));
+  CanvasUtils.drawFigure(cubicCanvas, StaticMath.moveFigure(cubeToDraw, cubicCenter));
+
+  const rotatingTetragonal = Rotate.multiplyByArrayOfMatrices(
     tetragonalFigure,
     Rotate.getRotationMatrix(angle, angle, 0)
   );
