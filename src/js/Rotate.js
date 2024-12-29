@@ -8,12 +8,6 @@ export default class Rotate {
    * @param {number} az
    * @return {Vector}
    */
-  static createRotationMatrix(angleX, angleY, angleZ) {
-    const matrixX = StaticMath.getXMatrix(angleX);
-    const matrixY = StaticMath.getYMatrix(angleY);
-    const matrixZ = StaticMath.getZMatrix(angleZ);
-    return matrixZ.matrixMultiply(matrixX.matrixMultiply(matrixY));
-  }
   static rotateVec(vector, ax, ay, az) {
     return Rotate.getRotationMatrix(ax, ay, az).vectorMultiply(vector);
   }
@@ -26,10 +20,7 @@ export default class Rotate {
    * @param {Matrix} rotationMatrix
    * @returns {Matrix[]}
    */
-  static rotationMatrixMultiplyByArrayOfMatrices(
-    arrayOfMatrices,
-    rotationMatrix
-  ) {
+  static multiplyByArrayOfMatrices(arrayOfMatrices, rotationMatrix) {
     const result = [];
     for (let m = 0; m < arrayOfMatrices.length; m++) {
       const currMatrix = arrayOfMatrices[m].transpose();
