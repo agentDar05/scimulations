@@ -55,7 +55,10 @@ export default class CanvasUtils {
       if (arrayOfColors[i]) {
         color = "" + arrayOfColors[i];
       }
-      CanvasUtils.drawRect(canvas, canvasFigure, color);
+      if (canvasFigure.width >= 3)
+        CanvasUtils.drawRect(canvas, canvasFigure, color);
+      else if(canvasFigure.width === 2)
+        CanvasUtils.drawLine(canvas, canvasFigure.getCol(0), canvasFigure.getCol(1), color);
     }
   }
 
