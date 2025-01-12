@@ -64,16 +64,10 @@ function drawFrame() {
     const angleBtwVecXYAndXZ = -StaticMath.angleToPlaneXZ(
       Rotate.rotateVec(rotationAxis, angleBtwVectorAndXY, 0, 0)
     );
-    const matrixLean = Rotate.getRotationMatrix(
-      angleBtwVectorAndXY,
-      0,
-      angleBtwVecXYAndXZ
-    );
-    const matrixLeanInverse = Rotate.getInverseRotationMatrix(
-      angleBtwVectorAndXY,
-      0,
-      angleBtwVecXYAndXZ
-    );
+    const matrixLean = Rotate.getRotationMatrix(0, 0, angleBtwVecXYAndXZ)
+            .matrixMultiply(Rotate.getRotationMatrix(angleBtwVectorAndXY, 0, 0));
+    const matrixLeanInverse = Rotate.getRotationMatrix(-angleBtwVectorAndXY, 0, 0)
+            .matrixMultiply(Rotate.getRotationMatrix(0, 0, -angleBtwVecXYAndXZ));
 
     cubeToDraw = Rotate.multiplyByArrayOfMatrices(
       Rotate.multiplyByArrayOfMatrices(
