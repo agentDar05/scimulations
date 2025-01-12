@@ -4,7 +4,12 @@ import StaticMath from "./StaticMath.js";
 import CanvasUtils from "./CanvasUtils.js";
 import Rotate from "./Rotate.js";
 import Lean from "./Lean.js";
-import {cubic, cubicFigure, tetragonal, tetragonalFigure,} from "./LatticeSystem.js";
+import {
+  cubic,
+  cubicFigure,
+  tetragonal,
+  tetragonalFigure,
+} from "./LatticeSystem.js";
 
 let angle = 0.4;
 let rotationAxis = null;
@@ -15,16 +20,23 @@ document.querySelector(".btn-rotate-axis").addEventListener("click", () => {
 
 const canvasHeight = 300;
 const canvasWidth = 300;
-const tetragonalCanvas = new Canvas2D(document.querySelector(".rotate-tetragonal"), {
-  width: canvasWidth,
-  height: canvasHeight,
-});
+const tetragonalCanvas = new Canvas2D(
+  document.querySelector(".rotate-tetragonal"),
+  {
+    width: canvasWidth,
+    height: canvasHeight,
+  }
+);
 const cubicCanvas = new Canvas2D(document.querySelector(".rotate-cubic"), {
   width: canvasWidth,
   height: canvasHeight,
 });
 
-const cubicCenter = new Vector([cubic.sides.x / 2, cubic.sides.y / 2, cubic.sides.z/2]);
+const cubicCenter = new Vector([
+  cubic.sides.x / 2,
+  cubic.sides.y / 2,
+  cubic.sides.z / 2,
+]);
 
 const tetragonalCenter = new Vector([
   tetragonal.sides.x / 2,
@@ -40,23 +52,45 @@ function drawFrame() {
   cubicCanvas.clear();
   let cubeToDraw = cubicFigure;
   if (rotationAxis) {
-    const angles = StaticMath.calcAngles(rotationAxis);
-    const leanAroundX = Lean.leanFigure(-angles.xy,0,0);
-    const leanAroundZ = Lean.leanFigure(0,0,-angles.xz);
-    const lean = leanAroundZ.lean.matrixMultiply(leanAroundX.lean)
-    const leanInverse = leanAroundX.inverse.matrixMultiply(leanAroundZ.inverse);
+    // const angles = StaticMath.calcAngles(rotationAxis);
+    // const leanAroundX = Lean.leanFigure(-angles.xy,0,0);
+    // const leanAroundZ = Lean.leanFigure(0,0,-angles.xz);
+    // const lean = leanAroundZ.lean.matrixMultiply(leanAroundX.lean)
+    // const leanInverse = leanAroundX.inverse.matrixMultiply(leanAroundZ.inverse);
+    const rotationMatrix = Rotate.getRotationMatrix((rotatingAngle += .01), 0, 0);
+    const angleBtwVectorAndXY = -StaticMath.angleToPlaneXY(
+      rotationAxis.projectOnYZ(Vector.YAXIS)
+    );
+    const angleBtwVecXYAndXZ = -StaticMath.angleToPlaneXZ(
+      Rotate.rotateVec(rotationAxis, angleBtwVectorAndXY, 0, 0)
+    );
+    const matrixLean = Rotate.getRotationMatrix(
+      angleBtwVectorAndXY,
+      0,
+      angleBtwVecXYAndXZ
+    );
+    const matrixLeanInverse = Rotate.getInverseRotationMatrix(
+      angleBtwVectorAndXY,
+      0,
+      angleBtwVecXYAndXZ
+    );
 
-    const rotationMatrix = Rotate.getRotationMatrix((rotatingAngle += .05), 0, 0);
     cubeToDraw = Rotate.multiplyByArrayOfMatrices(
-            Rotate.multiplyByArrayOfMatrices(
-                    Rotate.multiplyByArrayOfMatrices(cubicFigure, lean),
-                    rotationMatrix
-            ),
-            leanInverse
+      Rotate.multiplyByArrayOfMatrices(
+        Rotate.multiplyByArrayOfMatrices(cubicFigure, matrixLean),
+        rotationMatrix
+      ),
+      matrixLeanInverse
     );
   }
-  cubeToDraw = Rotate.multiplyByArrayOfMatrices(cubeToDraw, Rotate.getRotationMatrix(angle, angle, 0));
-  CanvasUtils.drawFigure(cubicCanvas, StaticMath.moveFigure(cubeToDraw, cubicCenter));
+  cubeToDraw = Rotate.multiplyByArrayOfMatrices(
+    cubeToDraw,
+    Rotate.getRotationMatrix(angle, angle, 0)
+  );
+  CanvasUtils.drawFigure(
+    cubicCanvas,
+    StaticMath.moveFigure(cubeToDraw, cubicCenter)
+  );
 
   const rotatingTetragonal = Rotate.multiplyByArrayOfMatrices(
     tetragonalFigure,
@@ -82,20 +116,3 @@ function drawFrame() {
 requestAnimationFrame(() => {
   drawFrame();
 });
-
-/*
-
-
-let rotationAxis = null;
-
-const cubic = [...]
-function drawFrame() {
-    let rotatingCube = cube;
-    if(rotationAxis) {
-        rotatingCube = //mathematics
-    }
-    draw(rotatingCube);
-    requestAnimationFrame(...);
-}
-
-*/
