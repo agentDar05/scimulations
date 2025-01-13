@@ -57,17 +57,27 @@ function drawFrame() {
     // const leanAroundZ = Lean.leanFigure(0,0,-angles.xz);
     // const lean = leanAroundZ.lean.matrixMultiply(leanAroundX.lean)
     // const leanInverse = leanAroundX.inverse.matrixMultiply(leanAroundZ.inverse);
-    const rotationMatrix = Rotate.getRotationMatrix((rotatingAngle += .01), 0, 0);
+    const rotationMatrix = Rotate.getRotationMatrix(
+      (rotatingAngle += 0.01),
+      0,
+      0
+    );
     const angleBtwVectorAndXY = -StaticMath.angleToPlaneXY(
       rotationAxis.projectOnYZ(Vector.YAXIS)
     );
     const angleBtwVecXYAndXZ = -StaticMath.angleToPlaneXZ(
       Rotate.rotateVec(rotationAxis, angleBtwVectorAndXY, 0, 0)
     );
-    const matrixLean = Rotate.getRotationMatrix(0, 0, angleBtwVecXYAndXZ)
-            .matrixMultiply(Rotate.getRotationMatrix(angleBtwVectorAndXY, 0, 0));
-    const matrixLeanInverse = Rotate.getRotationMatrix(-angleBtwVectorAndXY, 0, 0)
-            .matrixMultiply(Rotate.getRotationMatrix(0, 0, -angleBtwVecXYAndXZ));
+    const matrixLean = Rotate.getRotationMatrix(
+      0,
+      0,
+      angleBtwVecXYAndXZ
+    ).matrixMultiply(Rotate.getRotationMatrix(angleBtwVectorAndXY, 0, 0));
+    const matrixLeanInverse = Rotate.getRotationMatrix(
+      -angleBtwVectorAndXY,
+      0,
+      0
+    ).matrixMultiply(Rotate.getRotationMatrix(0, 0, -angleBtwVecXYAndXZ));
 
     cubeToDraw = Rotate.multiplyByArrayOfMatrices(
       Rotate.multiplyByArrayOfMatrices(
@@ -90,19 +100,23 @@ function drawFrame() {
     tetragonalFigure,
     Rotate.getRotationMatrix(angle, angle, 0)
   );
-  // CanvasUtils.drawLine(
-  //   cubicCanvas,
-  //   Rotate.rotateVec(new Vector([-25, -25, 0]), angle, angle, 0),
-  //   Rotate.rotateVec(new Vector([25, 25, 50]), angle, angle, 0)
-  // );
-  // CanvasUtils.drawFigure(
-  //   cubicCanvas,
-  //   StaticMath.moveFigure(rotatingCubic, cubicCenter)
-  // );
-  CanvasUtils.drawFigure(
-    tetragonalCanvas,
-    StaticMath.moveFigure(rotatingTetragonal, tetragonalCenter)
-  );
+  
+  if (rotatingAngle >= Math.PI * (2/3)) {
+    rotationAxis = null;
+  }
+    // CanvasUtils.drawLine(
+    //   cubicCanvas,
+    //   Rotate.rotateVec(new Vector([-25, -25, 0]), angle, angle, 0),
+    //   Rotate.rotateVec(new Vector([25, 25, 50]), angle, angle, 0)
+    // );
+    // CanvasUtils.drawFigure(
+    //   cubicCanvas,
+    //   StaticMath.moveFigure(rotatingCubic, cubicCenter)
+    // );
+    CanvasUtils.drawFigure(
+      tetragonalCanvas,
+      StaticMath.moveFigure(rotatingTetragonal, tetragonalCenter)
+    );
 
   //   angle = angle + 0.01;
   requestAnimationFrame(drawFrame);
