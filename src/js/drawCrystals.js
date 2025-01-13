@@ -13,11 +13,17 @@ import {
 
 let angle = 0.4;
 let rotationAxis = null;
-
-document.querySelector(".btn-rotate-axis").addEventListener("click", () => {
+let drawingCube = cubicFigure;
+document.querySelector(".btn-rotate-axis111").addEventListener("click", () => {
   rotationAxis = new Vector([1, 1, 1]);
+  drawFrame();
 });
-
+document.querySelector(".btn-rotate-axis1-11").addEventListener("click", () => {
+  rotationAxis = new Vector([1, -1, 1]);
+});
+document.querySelector(".btn-rotate-axis-111").addEventListener("click", () => {
+  rotationAxis = new Vector([-1, 1, 1]);
+});
 const canvasHeight = 300;
 const canvasWidth = 300;
 const tetragonalCanvas = new Canvas2D(
@@ -51,6 +57,7 @@ let rotatingAngle = 0;
 function drawFrame() {
   cubicCanvas.clear();
   let cubeToDraw = cubicFigure;
+
   if (rotationAxis) {
     // const angles = StaticMath.calcAngles(rotationAxis);
     // const leanAroundX = Lean.leanFigure(-angles.xy,0,0);
@@ -100,23 +107,23 @@ function drawFrame() {
     tetragonalFigure,
     Rotate.getRotationMatrix(angle, angle, 0)
   );
-  
-  if (rotatingAngle >= Math.PI * (2/3)) {
+
+  if (rotatingAngle >= Math.PI * (2 / 3)) {
     rotationAxis = null;
   }
-    // CanvasUtils.drawLine(
-    //   cubicCanvas,
-    //   Rotate.rotateVec(new Vector([-25, -25, 0]), angle, angle, 0),
-    //   Rotate.rotateVec(new Vector([25, 25, 50]), angle, angle, 0)
-    // );
-    // CanvasUtils.drawFigure(
-    //   cubicCanvas,
-    //   StaticMath.moveFigure(rotatingCubic, cubicCenter)
-    // );
-    CanvasUtils.drawFigure(
-      tetragonalCanvas,
-      StaticMath.moveFigure(rotatingTetragonal, tetragonalCenter)
-    );
+  // CanvasUtils.drawLine(
+  //   cubicCanvas,
+  //   Rotate.rotateVec(new Vector([-25, -25, 0]), angle, angle, 0),
+  //   Rotate.rotateVec(new Vector([25, 25, 50]), angle, angle, 0)
+  // );
+  // CanvasUtils.drawFigure(
+  //   cubicCanvas,
+  //   StaticMath.moveFigure(rotatingCubic, cubicCenter)
+  // );
+  CanvasUtils.drawFigure(
+    tetragonalCanvas,
+    StaticMath.moveFigure(rotatingTetragonal, tetragonalCenter)
+  );
 
   //   angle = angle + 0.01;
   requestAnimationFrame(drawFrame);
