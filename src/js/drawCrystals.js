@@ -11,18 +11,26 @@ import {
   tetragonalFigure,
 } from "./LatticeSystem.js";
 
-let angle = 0.4;
+const ORIGINAL_ANGLE = 0.4
+const ANGULAR_SPEED = 0.02;
+let angle = ORIGINAL_ANGLE;
 let rotationAxis = null;
+let rotatingAngle = 0;
 let drawingCube = cubicFigure;
 document.querySelector(".btn-rotate-axis111").addEventListener("click", () => {
   rotationAxis = new Vector([1, 1, 1]);
+  rotatingAngle = 0;
   drawFrame();
 });
 document.querySelector(".btn-rotate-axis1-11").addEventListener("click", () => {
   rotationAxis = new Vector([1, -1, 1]);
+  rotatingAngle = 0;
+  drawFrame();
 });
 document.querySelector(".btn-rotate-axis-111").addEventListener("click", () => {
   rotationAxis = new Vector([-1, 1, 1]);
+  rotatingAngle = 0;
+  drawFrame();
 });
 const canvasHeight = 300;
 const canvasWidth = 300;
@@ -53,7 +61,6 @@ const tetragonalCenter = new Vector([
 // tetragonal.sides.y
 // tetragonal.sides.z
 
-let rotatingAngle = 0;
 function drawFrame() {
   cubicCanvas.clear();
   let cubeToDraw = cubicFigure;
@@ -64,27 +71,17 @@ function drawFrame() {
     // const leanAroundZ = Lean.leanFigure(0,0,-angles.xz);
     // const lean = leanAroundZ.lean.matrixMultiply(leanAroundX.lean)
     // const leanInverse = leanAroundX.inverse.matrixMultiply(leanAroundZ.inverse);
-    const rotationMatrix = Rotate.getRotationMatrix(
-      (rotatingAngle += 0.01),
-      0,
-      0
-    );
+    const rotationMatrix = Rotate.getRotationMatrix((rotatingAngle += ANGULAR_SPEED), 0, 0);
     const angleBtwVectorAndXY = -StaticMath.angleToPlaneXY(
       rotationAxis.projectOnYZ(Vector.YAXIS)
     );
     const angleBtwVecXYAndXZ = -StaticMath.angleToPlaneXZ(
       Rotate.rotateVec(rotationAxis, angleBtwVectorAndXY, 0, 0)
     );
-    const matrixLean = Rotate.getRotationMatrix(
-      0,
-      0,
-      angleBtwVecXYAndXZ
-    ).matrixMultiply(Rotate.getRotationMatrix(angleBtwVectorAndXY, 0, 0));
-    const matrixLeanInverse = Rotate.getRotationMatrix(
-      -angleBtwVectorAndXY,
-      0,
-      0
-    ).matrixMultiply(Rotate.getRotationMatrix(0, 0, -angleBtwVecXYAndXZ));
+    const matrixLean = Rotate.getRotationMatrix(0, 0, angleBtwVecXYAndXZ)
+            .matrixMultiply(Rotate.getRotationMatrix(angleBtwVectorAndXY, 0, 0));
+    const matrixLeanInverse = Rotate.getRotationMatrix(-angleBtwVectorAndXY, 0, 0)
+            .matrixMultiply(Rotate.getRotationMatrix(0, 0, -angleBtwVecXYAndXZ));
 
     cubeToDraw = Rotate.multiplyByArrayOfMatrices(
       Rotate.multiplyByArrayOfMatrices(
