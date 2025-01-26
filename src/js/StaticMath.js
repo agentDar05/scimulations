@@ -70,14 +70,14 @@ export default class StaticMath {
    * @returns {number}
    */
   static angleToPlaneXZ(vector) {
-    const normalVector = new Vector([0, vector.get(1), 0]);
+    const normalVector = new Vector([0, Math.abs(vector.get(1)), 0]);
     const cos =
       vector.dot(normalVector) / vector.length() / normalVector.length();
 
     return Math.PI / 2 - Math.acos(cos);
   }
   static angleToPlaneYZ(vector) {
-    const normalVector = new Vector([vector.get(0), 0, 0]);
+    const normalVector = new Vector([Math.abs(vector.get(0)), 0, 0]);
     const cos =
       vector.dot(normalVector) / vector.length() / normalVector.length();
 
@@ -89,7 +89,7 @@ export default class StaticMath {
    * @returns {number}
    */
   static angleToPlaneXY(vector) {
-    const normalVector = new Vector([0, 0, vector.get(2)]);
+    const normalVector = new Vector([0, 0, Math.abs(vector.get(2))]);
     const cos =
       vector.dot(normalVector) / vector.length() / normalVector.length();
 

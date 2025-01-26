@@ -61,8 +61,24 @@ describe("#angleToPlaneXZ", () => {
       1e-5
     );
   });
+  it("returns angle to plane XZ", () => {
+    const rotationAxis = new Vector([1, 1, 1]);
+    const expected = StaticMath.degreesToRadians(35.26);
+    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneXZ(rotationAxis), expected, 10e-4)
+  })
 });
-
+describe("#angleToPlaneYZ", () => {
+  it("returns angle between vector and plane YZ", () => {
+  const rotationAxis = new Vector([1, -1, 1])
+    const expected = StaticMath.degreesToRadians(35.26);
+    AssertUtils.assertNumbersEqual(
+      StaticMath.angleToPlaneYZ(rotationAxis),
+      expected,
+      10e-4
+    );
+    
+  })
+})
 describe("#rotationMatrix", () => {
   it("returns rotation matrix", () => {
     const matrixX = StaticMath.getXMatrix(Math.PI / 9);
