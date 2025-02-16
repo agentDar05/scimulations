@@ -70,18 +70,25 @@ export default class StaticMath {
    * @returns {number}
    */
   static angleToPlaneXZ(vector) {
-    const normalVector = new Vector([0, Math.abs(vector.get(1)), 0]);
+    const xzprojection = new Vector([vector.get(0), 0, vector.get(2)]);
     const cos =
-      vector.dot(normalVector) / vector.length() / normalVector.length();
-
-    return Math.PI / 2 - Math.acos(cos);
+      vector.dot(xzprojection) / (vector.length() * xzprojection.length());
+    return Math.acos(cos);
   }
+ /**
+  * 
+  * @param {Vector} vector 
+  * @returns {Number}
+  */
   static angleToPlaneYZ(vector) {
-    const normalVector = new Vector([Math.abs(vector.get(0)), 0, 0]);
-    const cos =
-      vector.dot(normalVector) / vector.length() / normalVector.length();
+    let angle = 0
+    if (vector.get(0) * vector.get(1) < 0) {
+      angle = angle + Math.PI / 2;
+    }
+    const yzprojection = new Vector([vector.get(0), vector.get(1), 0]);
+    const cos = Vector.YAXIS.dot(yzprojection) / yzprojection.length();
 
-    return Math.PI / 2 - Math.acos(cos);
+    return angle + Math.acos(cos);
   }
   /**
    *
@@ -89,11 +96,11 @@ export default class StaticMath {
    * @returns {number}
    */
   static angleToPlaneXY(vector) {
-    const normalVector = new Vector([0, 0, Math.abs(vector.get(2))]);
+    const xyprojection = new Vector([vector.get(0), vector.get(1), 0]);
     const cos =
-      vector.dot(normalVector) / vector.length() / normalVector.length();
+      vector.dot(xyprojection) / vector.length() / xyprojection.length();
 
-    return Math.PI / 2 - Math.acos(cos);
+    return Math.acos(cos);
   }
   /**
    *

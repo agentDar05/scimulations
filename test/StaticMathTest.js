@@ -41,44 +41,104 @@ describe("#returnAngleBetweenVectors", () => {
     );
   });
 });
-describe("#angleToPlaneXZ", () => {
-  it("returns angle of vector", () => {
-    let expected = new Vector([1, 0, 0]);
-    expected = StaticMath.getZMatrix(StaticMath.degreesToRadians(30)).vectorMultiply(expected);
-    AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneXZ(expected),
-      StaticMath.degreesToRadians(30),
-      1e-5
-    );
-    AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneYZ(expected),
-      StaticMath.degreesToRadians(60),
-      1e-5
-    );
-    AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneXY(expected),
-      0,
-      1e-5
-    );
-  });
-  it("returns angle to plane XZ", () => {
-    const rotationAxis = new Vector([1, 1, 1]);
-    const expected = StaticMath.degreesToRadians(35.26);
-    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneXZ(rotationAxis), expected, 10e-4)
-  })
-});
 describe("#angleToPlaneYZ", () => {
   it("returns angle between vector and plane YZ", () => {
-  const rotationAxis = new Vector([1, -1, 1])
+    const A = new Vector([3, -2, 3]);
+    const B = new Vector([2, -3, -3]);
+    const C = new Vector([-1, -1, -3]);
+    const D = new Vector([-2, 1, 3]);
+    const E = new Vector([2, 2, -3]);
+    const F = new Vector([2, 1, 3]);
+    const G = new Vector([-1, -3, -3]);
+    const H = new Vector([-2, -3, 3]);
+    const I = new Vector([0, 1, 1]);
+    const J = new Vector([1, 0, 0]);
+
+    const expectedA = StaticMath.degreesToRadians(39.76);
+    const expectedB = StaticMath.degreesToRadians(25.24);
+    const expectedC = StaticMath.degreesToRadians(17.55);
+    const expectedD = StaticMath.degreesToRadians(32.31);
+    const expectedE = StaticMath.degreesToRadians(29.02);
+    const expectedF = StaticMath.degreesToRadians(32.31);
+    const expectedG = StaticMath.degreesToRadians(13.26);
+    const expectedH = StaticMath.degreesToRadians(25.24);
+    const expectedI = 0;
+    const expectedJ = StaticMath.degreesToRadians(90);
+    AssertUtils.assertNumbersEqual(
+      StaticMath.angleToPlaneYZ(A),
+      expectedA,
+      10e-4
+    );
+    AssertUtils.assertNumbersEqual(
+      StaticMath.angleToPlaneYZ(B),
+      expectedB,
+      10e-4
+    );
+    AssertUtils.assertNumbersEqual(
+      StaticMath.angleToPlaneYZ(C),
+      expectedC,
+      10e-4
+    );
+    AssertUtils.assertNumbersEqual(
+      StaticMath.angleToPlaneYZ(D),
+      expectedD,
+      10e-4
+    );
+    AssertUtils.assertNumbersEqual(
+      StaticMath.angleToPlaneYZ(E),
+      expectedE,
+      10e-4
+    );
+    AssertUtils.assertNumbersEqual(
+      StaticMath.angleToPlaneYZ(F),
+      expectedF,
+      10e-4
+    );
+    AssertUtils.assertNumbersEqual(
+      StaticMath.angleToPlaneYZ(G),
+      expectedG,
+      10e-4
+    );
+    AssertUtils.assertNumbersEqual(
+      StaticMath.angleToPlaneYZ(H),
+      expectedH,
+      10e-4
+    );
+    AssertUtils.assertNumbersEqual(
+      StaticMath.angleToPlaneYZ(I),
+      expectedI,
+      10e-4
+    );
+    AssertUtils.assertNumbersEqual(
+      StaticMath.angleToPlaneYZ(J),
+      expectedJ,
+      10e-4
+    );
+  });
+});
+describe("#angleToPlaneXZ", () => {
+  it("returns angle between vector and plane XZ", () => {
+    const rotationAxis = new Vector([1, -1, 1]);
     const expected = StaticMath.degreesToRadians(35.26);
     AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneYZ(rotationAxis),
+      StaticMath.angleToPlaneXZ(rotationAxis),
       expected,
       10e-4
     );
-    
-  })
-})
+  });
+});
+describe("#angleToPlaneXY", () => {
+  it("returns angle between vector and plane XY", () => {
+    const rotationAxis = new Vector([1, -1, 1]);
+    const expected = StaticMath.degreesToRadians(35.26);
+    AssertUtils.assertNumbersEqual(
+      StaticMath.angleToPlaneXY(rotationAxis),
+      expected,
+      10e-4
+    );
+  });
+});
+
 describe("#rotationMatrix", () => {
   it("returns rotation matrix", () => {
     const matrixX = StaticMath.getXMatrix(Math.PI / 9);
