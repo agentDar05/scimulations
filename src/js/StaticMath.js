@@ -81,14 +81,16 @@ export default class StaticMath {
   * @returns {Number}
   */
   static angleToPlaneYZ(vector) {
-    let angle = 0
-    if (vector.get(0) * vector.get(1) < 0) {
-      angle = angle + Math.PI / 2;
-    }
     const yzprojection = new Vector([vector.get(0), vector.get(1), 0]);
     const cos = Vector.YAXIS.dot(yzprojection) / yzprojection.length();
-
-    return angle + Math.acos(cos);
+    const angle = Math.acos(cos);
+    // If y-axis looks right and x-axis looks up, then the acos() returns correct anticlockwise angle for
+   // everything that lies below X-axis. But for everything above we have 2 choices:
+   //  - either return a negative angle. When inserted into anti-clockwise rotator this will rotate clockwise. Then
+   //    our rotated vector will always lie into the positive Y-direction.
+   //  - or just do 180-angle to keep rotating using a positive angle. In such cases the rotated vector will lie in
+   //    the negative Y-direction.
+    return vector.get(0) < 0 ? angle : Math.PI-angle;
   }
   /**
    *

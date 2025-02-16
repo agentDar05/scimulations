@@ -54,66 +54,16 @@ describe("#angleToPlaneYZ", () => {
     const I = new Vector([0, 1, 1]);
     const J = new Vector([1, 0, 0]);
 
-    const expectedA = StaticMath.degreesToRadians(39.76);
-    const expectedB = StaticMath.degreesToRadians(25.24);
-    const expectedC = StaticMath.degreesToRadians(17.55);
-    const expectedD = StaticMath.degreesToRadians(32.31);
-    const expectedE = StaticMath.degreesToRadians(29.02);
-    const expectedF = StaticMath.degreesToRadians(32.31);
-    const expectedG = StaticMath.degreesToRadians(13.26);
-    const expectedH = StaticMath.degreesToRadians(25.24);
-    const expectedI = 0;
-    const expectedJ = StaticMath.degreesToRadians(90);
-    AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneYZ(A),
-      expectedA,
-      10e-4
-    );
-    AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneYZ(B),
-      expectedB,
-      10e-4
-    );
-    AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneYZ(C),
-      expectedC,
-      10e-4
-    );
-    AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneYZ(D),
-      expectedD,
-      10e-4
-    );
-    AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneYZ(E),
-      expectedE,
-      10e-4
-    );
-    AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneYZ(F),
-      expectedF,
-      10e-4
-    );
-    AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneYZ(G),
-      expectedG,
-      10e-4
-    );
-    AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneYZ(H),
-      expectedH,
-      10e-4
-    );
-    AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneYZ(I),
-      expectedI,
-      10e-4
-    );
-    AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneYZ(J),
-      expectedJ,
-      10e-4
-    );
+    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(A), StaticMath.degreesToRadians(39.76), 10e-4);
+    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(B), StaticMath.degreesToRadians(25.24), 10e-4);
+    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(C), StaticMath.degreesToRadians(17.55), 10e-4);
+    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(D), StaticMath.degreesToRadians(32.31), 10e-4);
+    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(E), StaticMath.degreesToRadians(29.02), 10e-4);
+    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(F), StaticMath.degreesToRadians(32.31), 10e-4);
+    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(G), StaticMath.degreesToRadians(13.26), 10e-4);
+    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(H), StaticMath.degreesToRadians(25.24), 10e-4);
+    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(I), 0, 10e-4);
+    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(J), Math.PI/2, 10e-4);
   });
 });
 describe("#angleToPlaneXZ", () => {
