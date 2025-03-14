@@ -72,10 +72,10 @@ function drawFrame() {
     // const lean = leanAroundZ.lean.matrixMultiply(leanAroundX.lean)
     // const leanInverse = leanAroundX.inverse.matrixMultiply(leanAroundZ.inverse);
     const rotationMatrix = Rotate.getRotationMatrix((rotatingAngle += ANGULAR_SPEED), 0, 0);
-    const angleBtwVectorAndXY = -StaticMath.angleToPlaneXY(
-      rotationAxis.projectOnYZ(Vector.YAXIS)
+    const angleBtwVectorAndXY = StaticMath.angleToPlaneXY(
+      rotationAxis
     );
-    const angleBtwVecXYAndXZ = -StaticMath.angleToPlaneXZ(
+    const angleBtwVecXYAndXZ = StaticMath.angleToPlaneXZ(
       Rotate.rotateVec(rotationAxis, angleBtwVectorAndXY, 0, 0)
     );
     const matrixLean = Rotate.getRotationMatrix(0, 0, angleBtwVecXYAndXZ)

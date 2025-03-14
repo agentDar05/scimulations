@@ -9,8 +9,7 @@ export default class AssertUtils {
   static assertMatrixEqual(actual, expected, epsilon = 1e-6) {
     if (typeof epsilon !== "number" || isNaN(epsilon) || !isFinite(epsilon))
       throw new Error(
-        `Epsilon is not a number, actual: ${epsilon}, is number:${
-          typeof epsilon === "number"
+        `Epsilon is not a number, actual: ${epsilon}, is number:${typeof epsilon === "number"
         }, is NaN: ${isNaN(epsilon)}, isFinite:${isFinite(epsilon)}`
       );
     if (!StaticMath.areArraysEqual(actual.dimensions, expected.dimensions))
@@ -26,7 +25,7 @@ export default class AssertUtils {
     }
   }
   static assertVectorsEqual(v1, v2, epsilon = 1e-6) {
-    if(epsilon === undefined || epsilon === null)
+    if (epsilon === undefined || epsilon === null)
       throw new Error("Epsilon has to be defined, current: " + epsilon);
     if (v1.dimensions !== v2.dimensions)
       throw new Error("Vectors must have the same dimensions");
@@ -37,12 +36,18 @@ export default class AssertUtils {
         );
     }
   }
-  static assertNumbersEqual(actual, expected, epsilon) {
+  static assertNumbersEqual(actual, expected, epsilon = 10e-4) {
+    if (typeof actual !== "number") {
+      throw new Error(`Actual is not a number: ${actual}`);
+    }
+    if (typeof expected !== "number") {
+      throw new Error(`Expected is not a number: ${expected}`);
+    }
+
     if (Math.abs(actual - expected) >= epsilon)
       throw new Error(
         `Numbers aren't equal, actual: ${actual}, expected: ${expected}`
       );
   }
-}    
+}
 
- 

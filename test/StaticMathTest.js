@@ -1,10 +1,10 @@
 import assert from "assert";
-import { it } from "node:test";
 import Vector from "../src/js/Vector.js";
 import StaticMath from "../src/js/StaticMath.js";
 import Matrix from "../src/js/Matrix.js";
 import { describe } from "mocha";
 import AssertUtils from "../src/js/AssertUtils.js";
+import { log } from "console";
 describe("#assertMatrixEqual", () => {
   it("throws Error if matrices aren't equal", () => {
     const matrix1 = new Matrix([
@@ -43,9 +43,12 @@ describe("#returnAngleBetweenVectors", () => {
 });
 describe("#angleToPlaneYZ", () => {
   it("returns angle between vector and plane YZ", () => {
+    function testAngleToPlaneYZ(vector, degreeInRad) {
+      return AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(vector), degreeInRad, 10e-4);
+    }
     const A = new Vector([3, -2, 3]);
     const B = new Vector([2, -3, -3]);
-    const C = new Vector([-1, -1, -3]);
+    const C = new Vector([-1, 1, -3]);
     const D = new Vector([-2, 1, 3]);
     const E = new Vector([2, 2, -3]);
     const F = new Vector([2, 1, 3]);
@@ -54,38 +57,70 @@ describe("#angleToPlaneYZ", () => {
     const I = new Vector([0, 1, 1]);
     const J = new Vector([1, 0, 0]);
 
-    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(A), StaticMath.degreesToRadians(39.76), 10e-4);
-    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(B), StaticMath.degreesToRadians(25.24), 10e-4);
-    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(C), StaticMath.degreesToRadians(17.55), 10e-4);
-    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(D), StaticMath.degreesToRadians(32.31), 10e-4);
-    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(E), StaticMath.degreesToRadians(29.02), 10e-4);
-    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(F), StaticMath.degreesToRadians(32.31), 10e-4);
-    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(G), StaticMath.degreesToRadians(13.26), 10e-4);
-    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(H), StaticMath.degreesToRadians(25.24), 10e-4);
-    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(I), 0, 10e-4);
-    AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneYZ(J), Math.PI/2, 10e-4);
+    testAngleToPlaneYZ(A, 2.158798)
+    testAngleToPlaneYZ(B, 2.5535)
+    testAngleToPlaneYZ(C, -0.785398)
+    testAngleToPlaneYZ(D, -1.1070623)
+    testAngleToPlaneYZ(E, Math.PI / 4)
+    testAngleToPlaneYZ(F, 1.1070623445)
+    testAngleToPlaneYZ(G, -2.8199284724)
+    testAngleToPlaneYZ(H, -2.553)
+    testAngleToPlaneYZ(I, 0)
+    testAngleToPlaneYZ(J, Math.PI / 2)
   });
 });
 describe("#angleToPlaneXZ", () => {
   it("returns angle between vector and plane XZ", () => {
-    const rotationAxis = new Vector([1, -1, 1]);
-    const expected = StaticMath.degreesToRadians(35.26);
-    AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneXZ(rotationAxis),
-      expected,
-      10e-4
-    );
+    function testAngleToPlaneXZ(vector, degreeInRad) {
+      return AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneXZ(vector), degreeInRad, 10e-4);
+    }
+    const A = new Vector([3, -2, 3]);
+    const B = new Vector([2, -3, -3]);
+    const C = new Vector([-1, 1, -3]);
+    const D = new Vector([-2, 1, 3]);
+    const E = new Vector([2, 2, -3]);
+    const F = new Vector([2, 1, 3]);
+    const G = new Vector([-1, -3, -3]);
+    const H = new Vector([-2, -3, 3]);
+    const I = new Vector([1, 0, 1]);
+    const J = new Vector([0, 1, 0]);
+    testAngleToPlaneXZ(A, 0.588)
+    testAngleToPlaneXZ(B, 0.9827)
+    testAngleToPlaneXZ(C, -2.356)
+    testAngleToPlaneXZ(D, -2.677) //.
+    testAngleToPlaneXZ(E, -(Math.PI / 4));
+    testAngleToPlaneXZ(F, -0.4637) 
+    testAngleToPlaneXZ(G, 1.8924)
+    testAngleToPlaneXZ(H, 2.158)
+    testAngleToPlaneXZ(I, 0)
+    testAngleToPlaneXZ(J, -(Math.PI / 2))
   });
 });
 describe("#angleToPlaneXY", () => {
   it("returns angle between vector and plane XY", () => {
-    const rotationAxis = new Vector([1, -1, 1]);
-    const expected = StaticMath.degreesToRadians(35.26);
-    AssertUtils.assertNumbersEqual(
-      StaticMath.angleToPlaneXY(rotationAxis),
-      expected,
-      10e-4
-    );
+    function assertVectorAtAngleToXYPlane(vector, degree) {
+      return AssertUtils.assertNumbersEqual(StaticMath.angleToPlaneXY(vector), StaticMath.degreesToRadians(degree), 10e-4);
+    }
+    const A = new Vector([3, -2, 3]);
+    const B = new Vector([2, -3, -3]);
+    const C = new Vector([-1, 1, -3]);
+    const D = new Vector([-2, 1, 3]);
+    const E = new Vector([2, 2, -3]);
+    const F = new Vector([2, 1, 3]);
+    const G = new Vector([-1, -3, -3]);
+    const H = new Vector([-2, -3, 3]);
+    const I = new Vector([0, 1, 1]);
+    const J = new Vector([1, 0, 0]);
+    assertVectorAtAngleToXYPlane(A, 45)
+    assertVectorAtAngleToXYPlane(B, -56.31)
+    assertVectorAtAngleToXYPlane(C, -108.43)
+    assertVectorAtAngleToXYPlane(D, 123.69)
+    assertVectorAtAngleToXYPlane(E, -56.31)
+    assertVectorAtAngleToXYPlane(F, 56.31)
+    assertVectorAtAngleToXYPlane(G, -108.43)
+    assertVectorAtAngleToXYPlane(H, 123.69)
+    assertVectorAtAngleToXYPlane(I, 90)
+    assertVectorAtAngleToXYPlane(J, 0)
   });
 });
 
