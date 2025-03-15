@@ -32,7 +32,7 @@ export default class Rotate {
     const matrixX = StaticMath.getXMatrix(-angleX);
     const matrixY = StaticMath.getYMatrix(-angleY);
     const matrixZ = StaticMath.getZMatrix(-angleZ);
-    return matrixZ.matrixMultiply(matrixY.matrixMultiply(matrixX));
+    return matrixX.matrixMultiply(matrixY.matrixMultiply(matrixZ));
   }
   /**
    * @param {number} angleX
@@ -44,7 +44,7 @@ export default class Rotate {
     const matrixX = StaticMath.getXMatrix(angleX);
     const matrixY = StaticMath.getYMatrix(angleY);
     const matrixZ = StaticMath.getZMatrix(angleZ);
-    return matrixX.matrixMultiply(matrixY.matrixMultiply(matrixZ));
+    return matrixZ.matrixMultiply(matrixY.matrixMultiply(matrixX));
   }
   static getMatrix(angleX, angleY, angleZ) {
     return {

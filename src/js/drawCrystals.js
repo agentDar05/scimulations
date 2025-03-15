@@ -3,7 +3,6 @@ import Vector from "./Vector.js";
 import StaticMath from "./StaticMath.js";
 import CanvasUtils from "./CanvasUtils.js";
 import Rotate from "./Rotate.js";
-import Lean from "./Lean.js";
 import {
   cubic,
   cubicFigure,
@@ -12,11 +11,10 @@ import {
 } from "./LatticeSystem.js";
 
 const ORIGINAL_ANGLE = 0.4
-const ANGULAR_SPEED = 0.02;
+const ANGULAR_SPEED = 0.01;
 let angle = ORIGINAL_ANGLE;
 let rotationAxis = null;
 let rotatingAngle = 0;
-let drawingCube = cubicFigure;
 document.querySelector(".btn-rotate-axis111").addEventListener("click", () => {
   rotationAxis = new Vector([1, 1, 1]);
   rotatingAngle = 0;
@@ -62,8 +60,8 @@ function drawFrame() {
   if (rotationAxis) {
     const rotationMatrix = Rotate.getRotationMatrix(rotatingAngle += ANGULAR_SPEED, 0, 0)
     const angleToXY = StaticMath.angleToPlaneXY(rotationAxis)
-    const angleToXZ = StaticMath.angleToPlaneXZ(Rotate.rotateVec(rotationAxis, angleToXY, 0, 0))
-    const matrix = Rotate.getMatrix(angleToXY, 0, angleToXZ);
+    const angleToXZ = StaticMath.angleToPlaneXZ(Rotate.rotateVec(rotationAxis, 0, angleToXY, 0))
+    const matrix = Rotate.getMatrix(0, angleToXY, angleToXZ);
     cubeToDraw = Rotate.multiplyByArrayOfMatrices(
         Rotate.multiplyByArrayOfMatrices(
           Rotate.multiplyByArrayOfMatrices(cubicFigure, matrix.rotate),
@@ -72,14 +70,9 @@ function drawFrame() {
         matrix.rotateInverse
       );
   }
-  cubeToDraw = Rotate.multiplyByArrayOfMatrices(
-    cubeToDraw,
-    Rotate.getRotationMatrix(angle, angle, 0)
-  );
-  CanvasUtils.drawFigure(
-    cubicCanvas,
-    StaticMath.moveFigure(cubeToDraw, cubicCenter)
-  );
+  cubeToDraw = Rotate.multiplyByArrayOfMatrices(cubeToDraw, Rotate.getRotationMatrix(angle, angle, 0));
+
+  CanvasUtils.drawFigure(cubicCanvas, StaticMath.moveFigure(cubeToDraw, cubicCenter), ["red", "red", "red", "red"]);
 
   const rotatingTetragonal = Rotate.multiplyByArrayOfMatrices(
     tetragonalFigure,
@@ -88,6 +81,7 @@ function drawFrame() {
 
   if (rotatingAngle >= Math.PI * (2 / 3)) {
     rotationAxis = null;
+    rotatingAngle = ORIGINAL_ANGLE;
   }
 
   CanvasUtils.drawFigure(
