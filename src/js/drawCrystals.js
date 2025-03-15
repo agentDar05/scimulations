@@ -56,40 +56,21 @@ const tetragonalCenter = new Vector([
   tetragonal.sides.x / 2,
   tetragonal.sides.y / 2,
 ]);
-
-// tetragonal.sides.x
-// tetragonal.sides.y
-// tetragonal.sides.z
-
 function drawFrame() {
   cubicCanvas.clear();
   let cubeToDraw = cubicFigure;
-
   if (rotationAxis) {
-    // const angles = StaticMath.calcAngles(rotationAxis);
-    // const leanAroundX = Lean.leanFigure(-angles.xy,0,0);
-    // const leanAroundZ = Lean.leanFigure(0,0,-angles.xz);
-    // const lean = leanAroundZ.lean.matrixMultiply(leanAroundX.lean)
-    // const leanInverse = leanAroundX.inverse.matrixMultiply(leanAroundZ.inverse);
-    const rotationMatrix = Rotate.getRotationMatrix((rotatingAngle += ANGULAR_SPEED), 0, 0);
-    const angleBtwVectorAndXY = StaticMath.angleToPlaneXY(
-      rotationAxis
-    );
-    const angleBtwVecXYAndXZ = StaticMath.angleToPlaneXZ(
-      Rotate.rotateVec(rotationAxis, angleBtwVectorAndXY, 0, 0)
-    );
-    const matrixLean = Rotate.getRotationMatrix(0, 0, angleBtwVecXYAndXZ)
-            .matrixMultiply(Rotate.getRotationMatrix(angleBtwVectorAndXY, 0, 0));
-    const matrixLeanInverse = Rotate.getRotationMatrix(-angleBtwVectorAndXY, 0, 0)
-            .matrixMultiply(Rotate.getRotationMatrix(0, 0, -angleBtwVecXYAndXZ));
-
+    const rotationMatrix = Rotate.getRotationMatrix(rotatingAngle += ANGULAR_SPEED, 0, 0)
+    const angleToXY = StaticMath.angleToPlaneXY(rotationAxis)
+    const angleToXZ = StaticMath.angleToPlaneXZ(Rotate.rotateVec(rotationAxis, angleToXY, 0, 0))
+    const matrix = Rotate.getMatrix(angleToXY, 0, angleToXZ);
     cubeToDraw = Rotate.multiplyByArrayOfMatrices(
-      Rotate.multiplyByArrayOfMatrices(
-        Rotate.multiplyByArrayOfMatrices(cubicFigure, matrixLean),
-        rotationMatrix
-      ),
-      matrixLeanInverse
-    );
+        Rotate.multiplyByArrayOfMatrices(
+          Rotate.multiplyByArrayOfMatrices(cubicFigure, matrix.rotate),
+          rotationMatrix
+        ),
+        matrix.rotateInverse
+      );
   }
   cubeToDraw = Rotate.multiplyByArrayOfMatrices(
     cubeToDraw,
@@ -108,23 +89,18 @@ function drawFrame() {
   if (rotatingAngle >= Math.PI * (2 / 3)) {
     rotationAxis = null;
   }
-  // CanvasUtils.drawLine(
-  //   cubicCanvas,
-  //   Rotate.rotateVec(new Vector([-25, -25, 0]), angle, angle, 0),
-  //   Rotate.rotateVec(new Vector([25, 25, 50]), angle, angle, 0)
-  // );
-  // CanvasUtils.drawFigure(
-  //   cubicCanvas,
-  //   StaticMath.moveFigure(rotatingCubic, cubicCenter)
-  // );
+
   CanvasUtils.drawFigure(
     tetragonalCanvas,
     StaticMath.moveFigure(rotatingTetragonal, tetragonalCenter)
   );
-
-  //   angle = angle + 0.01;
   requestAnimationFrame(drawFrame);
 }
 requestAnimationFrame(() => {
   drawFrame();
 });
+{
+  /*
+  const rotationAxis = new Vector([1, 1, 1])
+  */
+}

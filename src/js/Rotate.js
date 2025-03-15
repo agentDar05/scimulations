@@ -46,4 +46,10 @@ export default class Rotate {
     const matrixZ = StaticMath.getZMatrix(angleZ);
     return matrixX.matrixMultiply(matrixY.matrixMultiply(matrixZ));
   }
+  static getMatrix(angleX, angleY, angleZ) {
+    return {
+      rotate: Rotate.getRotationMatrix(angleX, angleY, angleZ),
+      rotateInverse: Rotate.getInverseRotationMatrix(angleX, angleY, angleZ)
+    }
+  }
 }
