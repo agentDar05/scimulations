@@ -17,7 +17,7 @@ let rotationAxis = null;
 let rotatingAngle = 0;
 document.querySelector(".btn-rotate-axis111").addEventListener("click", () => {
   rotationAxis = new Vector([1, 1, 1]);
-  rotatingAngle = 0;
+  rotatingAngle = 0  
   drawFrame();
 });
 document.querySelector(".btn-rotate-axis1-11").addEventListener("click", () => {
@@ -56,7 +56,7 @@ const tetragonalCenter = new Vector([
 ]);
 function drawFrame() {
   cubicCanvas.clear();
-  let cubeToDraw = cubicFigure;
+  let cubeToDraw = StaticMath.moveFigure(cubicFigure, cubicCenter);
   if (rotationAxis) {
     const rotationMatrix = Rotate.getRotationMatrix(rotatingAngle += ANGULAR_SPEED, 0, 0)
     const angleToXY = StaticMath.angleToPlaneXY(rotationAxis)
@@ -64,31 +64,29 @@ function drawFrame() {
     const matrix = Rotate.getMatrix(0, angleToXY, angleToXZ);
     cubeToDraw = Rotate.multiplyByArrayOfMatrices(
         Rotate.multiplyByArrayOfMatrices(
-          Rotate.multiplyByArrayOfMatrices(cubicFigure, matrix.rotate),
+          Rotate.multiplyByArrayOfMatrices(cubeToDraw, matrix.rotate),
           rotationMatrix
         ),
         matrix.rotateInverse
       );
   }
   cubeToDraw = Rotate.multiplyByArrayOfMatrices(cubeToDraw, Rotate.getRotationMatrix(angle, angle, 0));
-
-  CanvasUtils.drawFigure(cubicCanvas, StaticMath.moveFigure(cubeToDraw, cubicCenter), ["red", "red", "red", "red"]);
-
+  CanvasUtils.drawFigure(cubicCanvas, cubeToDraw, ["red", "red", "red", "red"]);
   const rotatingTetragonal = Rotate.multiplyByArrayOfMatrices(
     tetragonalFigure,
     Rotate.getRotationMatrix(angle, angle, 0)
   );
-
   if (rotatingAngle >= Math.PI * (2 / 3)) {
     rotationAxis = null;
-    rotatingAngle = ORIGINAL_ANGLE;
   }
 
   CanvasUtils.drawFigure(
     tetragonalCanvas,
     StaticMath.moveFigure(rotatingTetragonal, tetragonalCenter)
   );
-  requestAnimationFrame(drawFrame);
+  if (rotationAxis) {
+    requestAnimationFrame(drawFrame);    
+  }
 }
 requestAnimationFrame(() => {
   drawFrame();
