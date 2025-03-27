@@ -56,7 +56,7 @@ const tetragonalCenter = new Vector([
 ]);
 function drawFrame() {
   cubicCanvas.clear();
-  let cubeToDraw = StaticMath.moveFigure(cubicFigure, cubicCenter);
+  let cubeToDraw = cubicFigure;
   if (rotationAxis) {
     const rotationMatrix = Rotate.getRotationMatrix(rotatingAngle += ANGULAR_SPEED, 0, 0)
     const angleToXY = StaticMath.angleToPlaneXY(rotationAxis)
