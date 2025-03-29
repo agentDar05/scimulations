@@ -10,9 +10,10 @@ import {
   tetragonalFigure,
 } from "./LatticeSystem.js";
 
-const ORIGINAL_ANGLE = 0.4
 const ANGULAR_SPEED = 0.01;
-let angle = ORIGINAL_ANGLE;
+
+/** @type {Matrix} */
+const CAMERA_ROTATION_MATRIX = Rotate.getRotationMatrix(0.4, 0.4, 0);
 let rotatingAngle = 0;
 
 /**
@@ -69,11 +70,11 @@ function drawFrame() {
     rotatingAngle += ANGULAR_SPEED;
     cube = Rotate.multiplyByArrayOfMatrices(cube, rotationMatrix);
   }
-  const cubeView = Rotate.multiplyByArrayOfMatrices(cube, Rotate.getRotationMatrix(angle, angle, 0));
+  const cubeView = Rotate.multiplyByArrayOfMatrices(cube, CAMERA_ROTATION_MATRIX);
 
   CanvasUtils.drawFilledFigure(cubicCanvas, cubeView, ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",])
   CanvasUtils.drawFigure(cubicCanvas, cubeView);
-  const rotatingTetragonal = Rotate.multiplyByArrayOfMatrices(tetragonalFigure, Rotate.getRotationMatrix(angle, angle, 0));
+  const rotatingTetragonal = Rotate.multiplyByArrayOfMatrices(tetragonalFigure, CAMERA_ROTATION_MATRIX);
   if (rotatingAngle >= Math.PI * (2 / 3)) {
     rotationMatrix = null;
   }
