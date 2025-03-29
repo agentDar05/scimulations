@@ -1,6 +1,12 @@
 import Vector from "./Vector.js";
 import Matrix from "./Matrix.js";
 export default class StaticMath {
+  /**
+   * 
+   * @param {Matrix[]} figure 
+   * @param {Vector} center 
+   * @returns {Matrix[]}
+   */
   static moveFigure(figure, center) {
     const output = [];
     for (let c = 0; c < figure.length; c++) {

@@ -17,7 +17,7 @@ let rotationAxis = null;
 let rotatingAngle = 0;
 document.querySelector(".btn-rotate-axis111").addEventListener("click", () => {
   rotationAxis = new Vector([1, 1, 1]);
-  rotatingAngle = 0  
+  rotatingAngle = 0
   drawFrame();
 });
 document.querySelector(".btn-rotate-axis1-11").addEventListener("click", () => {
@@ -54,23 +54,27 @@ const tetragonalCenter = new Vector([
   tetragonal.sides.x / 2,
   tetragonal.sides.y / 2,
 ]);
+let cubeToDraw = StaticMath.moveFigure(cubicFigure, cubicCenter)
 function drawFrame() {
   cubicCanvas.clear();
-  let cubeToDraw = cubicFigure;
+  // let cubeToDraw = cubicFigure;
   if (rotationAxis) {
-    const rotationMatrix = Rotate.getRotationMatrix(rotatingAngle += ANGULAR_SPEED, 0, 0)
+    rotatingAngle += ANGULAR_SPEED;
+    const rotationMatrix = Rotate.getRotationMatrix(ANGULAR_SPEED, 0, 0)
     const angleToXY = StaticMath.angleToPlaneXY(rotationAxis)
     const angleToXZ = StaticMath.angleToPlaneXZ(Rotate.rotateVec(rotationAxis, 0, angleToXY, 0))
     const matrix = Rotate.getMatrix(0, angleToXY, angleToXZ);
     cubeToDraw = Rotate.multiplyByArrayOfMatrices(
-        Rotate.multiplyByArrayOfMatrices(
-          Rotate.multiplyByArrayOfMatrices(cubeToDraw, matrix.rotate),
-          rotationMatrix
-        ),
-        matrix.rotateInverse
-      );
+      Rotate.multiplyByArrayOfMatrices(
+        Rotate.multiplyByArrayOfMatrices(cubeToDraw, matrix.rotate),
+        rotationMatrix
+      ),
+      matrix.rotateInverse
+    );
   }
   cubeToDraw = Rotate.multiplyByArrayOfMatrices(cubeToDraw, Rotate.getRotationMatrix(angle, angle, 0));
+
+  CanvasUtils.drawFilledFigure(cubicCanvas, cubeToDraw, ["white", "white", "white", "white", "white", "red", "white",])
   CanvasUtils.drawFigure(cubicCanvas, cubeToDraw, ["red", "red", "red", "red"]);
   const rotatingTetragonal = Rotate.multiplyByArrayOfMatrices(
     tetragonalFigure,
@@ -85,7 +89,7 @@ function drawFrame() {
     StaticMath.moveFigure(rotatingTetragonal, tetragonalCenter)
   );
   if (rotationAxis) {
-    requestAnimationFrame(drawFrame);    
+    requestAnimationFrame(drawFrame);
   }
 }
 requestAnimationFrame(() => {
