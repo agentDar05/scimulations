@@ -13,28 +13,28 @@ import {
 const ORIGINAL_ANGLE = 0.4
 const ANGULAR_SPEED = 0.01;
 let angle = ORIGINAL_ANGLE;
-let rotationAxis = null;
 let rotatingAngle = 0;
 
-/** @type {Matrix | null} */
+/**
+ * Is set when we click on the rotation, and once the rotation is finished - must be nullified.
+ *
+ * @type {Matrix | null}
+ */
 let rotationMatrix = null;
 
 document.querySelector(".btn-rotate-axis111").addEventListener("click", () => {
-  rotationAxis = new Vector([1, 1, 1]);
   rotatingAngle = 0;
-  rotationMatrix = computeRotationMatrix(rotationAxis);
+  rotationMatrix = computeRotationMatrix(new Vector([1, 1, 1]));
   drawFrame();
 });
 document.querySelector(".btn-rotate-axis1-11").addEventListener("click", () => {
-  rotationAxis = new Vector([1, -1, 1]);
   rotatingAngle = 0;
-  rotationMatrix = computeRotationMatrix(rotationAxis);
+  rotationMatrix = computeRotationMatrix(new Vector([1, -1, 1]));
   drawFrame();
 });
 document.querySelector(".btn-rotate-axis-111").addEventListener("click", () => {
-  rotationAxis = new Vector([-1, 1, 1]);
   rotatingAngle = 0;
-  rotationMatrix = computeRotationMatrix(rotationAxis);
+  rotationMatrix = computeRotationMatrix(new Vector([-1, 1, 1]));
   drawFrame();
 });
 const canvasHeight = 300;
@@ -65,7 +65,7 @@ let cube = StaticMath.moveFigure(cubicFigure, cubicCenter);
 function drawFrame() {
   cubicCanvas.clear();
   // let cube = cubicFigure;
-  if (rotationAxis) {
+  if (rotationMatrix) {
     rotatingAngle += ANGULAR_SPEED;
     cube = Rotate.multiplyByArrayOfMatrices(cube, rotationMatrix);
   }
@@ -75,14 +75,14 @@ function drawFrame() {
   CanvasUtils.drawFigure(cubicCanvas, cubeView);
   const rotatingTetragonal = Rotate.multiplyByArrayOfMatrices(tetragonalFigure, Rotate.getRotationMatrix(angle, angle, 0));
   if (rotatingAngle >= Math.PI * (2 / 3)) {
-    rotationAxis = null;
+    rotationMatrix = null;
   }
 
   CanvasUtils.drawFigure(
     tetragonalCanvas,
     StaticMath.moveFigure(rotatingTetragonal, tetragonalCenter)
   );
-  if (rotationAxis) {
+  if (rotationMatrix) {
     requestAnimationFrame(drawFrame);
   }
 }
