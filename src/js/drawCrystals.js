@@ -15,19 +15,26 @@ const ANGULAR_SPEED = 0.01;
 let angle = ORIGINAL_ANGLE;
 let rotationAxis = null;
 let rotatingAngle = 0;
+
+/** @type {Matrix | null} */
+let rotationMatrix = null;
+
 document.querySelector(".btn-rotate-axis111").addEventListener("click", () => {
   rotationAxis = new Vector([1, 1, 1]);
-  rotatingAngle = 0
+  rotatingAngle = 0;
+  rotationMatrix = computeRotationMatrix(rotationAxis);
   drawFrame();
 });
 document.querySelector(".btn-rotate-axis1-11").addEventListener("click", () => {
   rotationAxis = new Vector([1, -1, 1]);
   rotatingAngle = 0;
+  rotationMatrix = computeRotationMatrix(rotationAxis);
   drawFrame();
 });
 document.querySelector(".btn-rotate-axis-111").addEventListener("click", () => {
   rotationAxis = new Vector([-1, 1, 1]);
   rotatingAngle = 0;
+  rotationMatrix = computeRotationMatrix(rotationAxis);
   drawFrame();
 });
 const canvasHeight = 300;
@@ -54,23 +61,13 @@ const tetragonalCenter = new Vector([
   tetragonal.sides.x / 2,
   tetragonal.sides.y / 2,
 ]);
-let cube = StaticMath.moveFigure(cubicFigure, cubicCenter)
+let cube = StaticMath.moveFigure(cubicFigure, cubicCenter);
 function drawFrame() {
   cubicCanvas.clear();
   // let cube = cubicFigure;
   if (rotationAxis) {
     rotatingAngle += ANGULAR_SPEED;
-    const rotationMatrix = Rotate.getRotationMatrix(ANGULAR_SPEED, 0, 0)
-    const angleToXY = StaticMath.angleToPlaneXY(rotationAxis)
-    const angleToXZ = StaticMath.angleToPlaneXZ(Rotate.rotateVec(rotationAxis, 0, angleToXY, 0))
-    const matrix = Rotate.getMatrix(0, angleToXY, angleToXZ);
-    cube = Rotate.multiplyByArrayOfMatrices(
-      Rotate.multiplyByArrayOfMatrices(
-        Rotate.multiplyByArrayOfMatrices(cube, matrix.rotate),
-        rotationMatrix
-      ),
-      matrix.rotateInverse
-    );
+    cube = Rotate.multiplyByArrayOfMatrices(cube, rotationMatrix);
   }
   const cubeView = Rotate.multiplyByArrayOfMatrices(cube, Rotate.getRotationMatrix(angle, angle, 0));
 
@@ -92,8 +89,15 @@ function drawFrame() {
 requestAnimationFrame(() => {
   drawFrame();
 });
-{
-  /*
-  const rotationAxis = new Vector([1, 1, 1])
-  */
+
+/**
+ * @param {Vector} rotationAxis
+ * @return {Matrix}
+ */
+function computeRotationMatrix(rotationAxis) {
+  const rotationMatrix = Rotate.getRotationMatrix(ANGULAR_SPEED, 0, 0);
+  const angleToXY = StaticMath.angleToPlaneXY(rotationAxis);
+  const angleToXZ = StaticMath.angleToPlaneXZ(Rotate.rotateVec(rotationAxis, 0, angleToXY, 0));
+  const alignWithXAxis = Rotate.getMatrix(0, angleToXY, angleToXZ);
+  return alignWithXAxis.rotateInverse.matrixMultiply(rotationMatrix.matrixMultiply(alignWithXAxis.rotate));
 }
