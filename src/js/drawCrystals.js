@@ -54,32 +54,29 @@ const tetragonalCenter = new Vector([
   tetragonal.sides.x / 2,
   tetragonal.sides.y / 2,
 ]);
-let cubeToDraw = StaticMath.moveFigure(cubicFigure, cubicCenter)
+let cube = StaticMath.moveFigure(cubicFigure, cubicCenter)
 function drawFrame() {
   cubicCanvas.clear();
-  // let cubeToDraw = cubicFigure;
+  // let cube = cubicFigure;
   if (rotationAxis) {
     rotatingAngle += ANGULAR_SPEED;
     const rotationMatrix = Rotate.getRotationMatrix(ANGULAR_SPEED, 0, 0)
     const angleToXY = StaticMath.angleToPlaneXY(rotationAxis)
     const angleToXZ = StaticMath.angleToPlaneXZ(Rotate.rotateVec(rotationAxis, 0, angleToXY, 0))
     const matrix = Rotate.getMatrix(0, angleToXY, angleToXZ);
-    cubeToDraw = Rotate.multiplyByArrayOfMatrices(
+    cube = Rotate.multiplyByArrayOfMatrices(
       Rotate.multiplyByArrayOfMatrices(
-        Rotate.multiplyByArrayOfMatrices(cubeToDraw, matrix.rotate),
+        Rotate.multiplyByArrayOfMatrices(cube, matrix.rotate),
         rotationMatrix
       ),
       matrix.rotateInverse
     );
   }
-  cubeToDraw = Rotate.multiplyByArrayOfMatrices(cubeToDraw, Rotate.getRotationMatrix(angle, angle, 0));
+  const cubeView = Rotate.multiplyByArrayOfMatrices(cube, Rotate.getRotationMatrix(angle, angle, 0));
 
-  CanvasUtils.drawFilledFigure(cubicCanvas, cubeToDraw, ["white", "white", "white", "white", "white", "red", "white",])
-  CanvasUtils.drawFigure(cubicCanvas, cubeToDraw, ["red", "red", "red", "red"]);
-  const rotatingTetragonal = Rotate.multiplyByArrayOfMatrices(
-    tetragonalFigure,
-    Rotate.getRotationMatrix(angle, angle, 0)
-  );
+  CanvasUtils.drawFilledFigure(cubicCanvas, cubeView, ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",])
+  CanvasUtils.drawFigure(cubicCanvas, cubeView);
+  const rotatingTetragonal = Rotate.multiplyByArrayOfMatrices(tetragonalFigure, Rotate.getRotationMatrix(angle, angle, 0));
   if (rotatingAngle >= Math.PI * (2 / 3)) {
     rotationAxis = null;
   }
