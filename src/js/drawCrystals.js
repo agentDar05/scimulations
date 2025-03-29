@@ -38,19 +38,14 @@ document.querySelector(".btn-rotate-axis-111").addEventListener("click", () => {
   rotationMatrix = computeRotationMatrix(new Vector([-1, 1, 1]));
   drawFrame();
 });
-const canvasHeight = 300;
-const canvasWidth = 300;
-const tetragonalCanvas = new Canvas2D(
-  document.querySelector(".rotate-tetragonal"),
-  {
-    width: canvasWidth,
-    height: canvasHeight,
-  }
+const CANVAS_HEIGHT = 300;
+const CANVAS_WIDTH = 300;
+const tetragonalCanvas = new Canvas2D (
+        document.querySelector(".rotate-tetragonal"), {width: CANVAS_WIDTH, height: CANVAS_HEIGHT}
 );
-const cubicCanvas = new Canvas2D(document.querySelector(".rotate-cubic"), {
-  width: canvasWidth,
-  height: canvasHeight,
-});
+const cubicCanvas = new Canvas2D (
+        document.querySelector(".rotate-cubic"), {width: CANVAS_WIDTH, height: CANVAS_HEIGHT}
+);
 
 
 const tetragonalCenter = new Vector([
@@ -65,15 +60,14 @@ let cube = StaticMath.moveFigure(cubicFigure, new Vector([ // center of cube is 
 
 function drawFrame() {
   cubicCanvas.clear();
-  // let cube = cubicFigure;
   if (rotationMatrix) {
     rotatingAngle += ANGULAR_SPEED;
     cube = Rotate.multiplyByArrayOfMatrices(cube, rotationMatrix);
   }
   const cubeView = Rotate.multiplyByArrayOfMatrices(cube, CAMERA_ROTATION_MATRIX);
-
   CanvasUtils.drawFilledFigure(cubicCanvas, cubeView, ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",])
   CanvasUtils.drawFigure(cubicCanvas, cubeView);
+
   const rotatingTetragonal = Rotate.multiplyByArrayOfMatrices(tetragonalFigure, CAMERA_ROTATION_MATRIX);
   if (rotatingAngle >= Math.PI * (2 / 3)) {
     rotationMatrix = null;
