@@ -51,17 +51,17 @@ const cubicCanvas = new Canvas2D(document.querySelector(".rotate-cubic"), {
   height: canvasHeight,
 });
 
-const cubicCenter = new Vector([
-  cubic.sides.x / 2,
-  cubic.sides.y / 2,
-  cubic.sides.z / 2,
-]);
 
 const tetragonalCenter = new Vector([
   tetragonal.sides.x / 2,
   tetragonal.sides.y / 2,
 ]);
-let cube = StaticMath.moveFigure(cubicFigure, cubicCenter);
+let cube = StaticMath.moveFigure(cubicFigure, new Vector([ // center of cube is now at the center of coordinates
+  cubic.sides.x / 2,
+  cubic.sides.y / 2,
+  cubic.sides.z / 2,
+]));
+
 function drawFrame() {
   cubicCanvas.clear();
   // let cube = cubicFigure;
