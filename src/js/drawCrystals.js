@@ -9,9 +9,11 @@ import {
   tetragonal,
   tetragonalFigure,
 } from "./LatticeSystem.js";
-
+const btn_rotate_axis111 = document.getElementById("btn-rotate-axis111")
+const btn_rotate_axis1_11 = document.getElementById("btn-rotate-axis1-11")
+const btn_rotate_axis_111 = document.getElementById("btn-rotate-axis-111")
 const ANGULAR_SPEED = 0.01;
-
+let isButtonDisabled = false
 /** @type {Matrix} */
 const CAMERA_ROTATION_MATRIX = Rotate.getRotationMatrix(0.4, 0.4, 0);
 let rotatingAngle = 0;
@@ -23,28 +25,44 @@ let rotatingAngle = 0;
  */
 let rotationMatrix = null;
 
-document.querySelector(".btn-rotate-axis111").addEventListener("click", () => {
+btn_rotate_axis111.addEventListener("click", () => {
   rotatingAngle = 0;
   rotationMatrix = computeRotationMatrix(new Vector([1, 1, 1]));
   drawFrame();
 });
-document.querySelector(".btn-rotate-axis1-11").addEventListener("click", () => {
+btn_rotate_axis1_11.addEventListener("click", () => {
   rotatingAngle = 0;
   rotationMatrix = computeRotationMatrix(new Vector([1, -1, 1]));
   drawFrame();
 });
-document.querySelector(".btn-rotate-axis-111").addEventListener("click", () => {
+btn_rotate_axis_111.addEventListener("click", () => {
   rotatingAngle = 0;
   rotationMatrix = computeRotationMatrix(new Vector([-1, 1, 1]));
   drawFrame();
 });
+const ARRAY_OF_BUTTONS = [
+  btn_rotate_axis111,
+  btn_rotate_axis1_11,
+  btn_rotate_axis_111
+]
+/**
+ * 
+ * @param {Array} arrayOfButtons 
+ * @param {Boolean} status 
+ */
+function changeButtonStatus(arrayOfButtons, status) {
+  arrayOfButtons.forEach(button => button.disabled = status);
+}
+
+
+changeButtonStatus(ARRAY_OF_BUTTONS, false)
 const CANVAS_HEIGHT = 300;
 const CANVAS_WIDTH = 300;
-const tetragonalCanvas = new Canvas2D (
-        document.querySelector(".rotate-tetragonal"), {width: CANVAS_WIDTH, height: CANVAS_HEIGHT}
+const tetragonalCanvas = new Canvas2D(
+  document.querySelector(".rotate-tetragonal"), { width: CANVAS_WIDTH, height: CANVAS_HEIGHT }
 );
-const cubicCanvas = new Canvas2D (
-        document.querySelector(".rotate-cubic"), {width: CANVAS_WIDTH, height: CANVAS_HEIGHT}
+const cubicCanvas = new Canvas2D(
+  document.querySelector(".rotate-cubic"), { width: CANVAS_WIDTH, height: CANVAS_HEIGHT }
 );
 
 
@@ -59,8 +77,13 @@ let cube = StaticMath.moveFigure(cubicFigure, new Vector([ // center of cube is 
 ]));
 
 function drawFrame() {
+  console.log(isButtonDisabled);
+
   cubicCanvas.clear();
   if (rotationMatrix) {
+    isButtonDisabled = "disabled"
+    changeButtonStatus(ARRAY_OF_BUTTONS, true)
+
     rotatingAngle += ANGULAR_SPEED;
     cube = Rotate.multiplyByArrayOfMatrices(cube, rotationMatrix);
   }
@@ -70,6 +93,7 @@ function drawFrame() {
 
   const rotatingTetragonal = Rotate.multiplyByArrayOfMatrices(tetragonalFigure, CAMERA_ROTATION_MATRIX);
   if (rotatingAngle >= Math.PI * (2 / 3)) {
+    changeButtonStatus(ARRAY_OF_BUTTONS, false)
     rotationMatrix = null;
   }
 
