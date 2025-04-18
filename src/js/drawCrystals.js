@@ -18,7 +18,11 @@ let isButtonDisabled = false
 /** @type {Matrix} */
 const CAMERA_ROTATION_MATRIX = Rotate.getRotationMatrix(0.4, 0.4, 0);
 let rotatingAngle = 0;
-let axis = null
+let currDisplayingAxis = null
+let currRotatingVector = null
+const CAMERA_VECTOR111 = leanRotationAxis(new Matrix([new Vector([-1, -1, -1]), new Vector([1, 1, 1])]), CAMERA_ROTATION_MATRIX)
+const CAMERA_VECTOR_111 = leanRotationAxis(new Matrix([new Vector([-1, 1, 1]), new Vector([1, -1, -1])]), CAMERA_ROTATION_MATRIX)
+const CAMERA_VECTOR1_11 = leanRotationAxis(new Matrix([new Vector([1, -1, 1]), new Vector([-1, 1, -1])]), CAMERA_ROTATION_MATRIX)
 /**
  * Is set when we click on the rotation, and once the rotation is finished - must be nullified.
  *
@@ -27,37 +31,37 @@ let axis = null
 let rotationMatrix = null;
 document.querySelectorAll(".btn-rotate-axis").forEach((button) => {
   button.addEventListener("mouseleave", () => {
-    axis = null
+    currDisplayingAxis = null
   })
 })
 btn_rotate_axis111.addEventListener("mouseover", () => {
-  axis = new Matrix([new Vector([-25, -25, -25]), new Vector([25, 25, 25])]);
-  axis = Rotate.multiplyByArrayOfMatrices([axis], CAMERA_ROTATION_MATRIX)[0]
+  currDisplayingAxis = CAMERA_VECTOR111
   drawFrame();
 });
 btn_rotate_axis1_11.addEventListener("mouseover", () => {
-  axis = new Matrix([new Vector([25, -25, 25]), new Vector([-25, 25, -25])]);
-  axis = Rotate.multiplyByArrayOfMatrices([axis], CAMERA_ROTATION_MATRIX)[0]
+  currDisplayingAxis = CAMERA_VECTOR1_11
   drawFrame();
 });
 btn_rotate_axis_111.addEventListener("mouseover", () => {
-  axis = new Matrix([new Vector([-25, 25, 25]), new Vector([25, -25, -25])]);
-  axis = Rotate.multiplyByArrayOfMatrices([axis], CAMERA_ROTATION_MATRIX)[0]
+  currDisplayingAxis = CAMERA_VECTOR_111
   drawFrame();
 });
 btn_rotate_axis111.addEventListener("click", () => {  
   rotatingAngle = 0;
   rotationMatrix = computeRotationMatrix(new Vector([1, 1, 1]));
+  currRotatingVector = CAMERA_VECTOR111
   drawFrame();
 });
 btn_rotate_axis1_11.addEventListener("click", () => {
   rotatingAngle = 0;
   rotationMatrix = computeRotationMatrix(new Vector([1, -1, 1]));
+  currRotatingVector = CAMERA_VECTOR1_11
   drawFrame();
 });
 btn_rotate_axis_111.addEventListener("click", () => {
   rotatingAngle = 0;
   rotationMatrix = computeRotationMatrix(new Vector([-1, 1, 1]));
+  currRotatingVector = CAMERA_VECTOR_111
   drawFrame();
 });
 const ARRAY_OF_BUTTONS = [
@@ -73,7 +77,10 @@ const ARRAY_OF_BUTTONS = [
 function changeButtonStatus(arrayOfButtons, status) {
   arrayOfButtons.forEach(button => button.disabled = status);
 }
-
+function leanRotationAxis(matrix, cameraRotation) {
+    let axis = Rotate.multiplyByArrayOfMatrices([matrix.numberMultiply(25)], cameraRotation)[0];
+    return axis;
+}
 
 changeButtonStatus(ARRAY_OF_BUTTONS, false)
 const CANVAS_HEIGHT = 300;
@@ -98,8 +105,11 @@ let cube = StaticMath.moveFigure(cubicFigure, new Vector([ // center of cube is 
 
 function drawFrame() {
   cubicCanvas.clear();
-  if (axis) {
-    CanvasUtils.drawLine(cubicCanvas, axis.getCol(0), axis.getCol(1))
+  if (currDisplayingAxis) {
+    CanvasUtils.drawLine(cubicCanvas, currDisplayingAxis.getCol(0), currDisplayingAxis.getCol(1))
+  }
+  if (currRotatingVector) {
+    CanvasUtils.drawLine(cubicCanvas, currRotatingVector.getCol(0), currRotatingVector.getCol(1))
   }
   if (rotationMatrix) {
     isButtonDisabled = "disabled"
@@ -116,6 +126,7 @@ function drawFrame() {
   if (rotatingAngle >= Math.PI * (2 / 3)) {
     changeButtonStatus(ARRAY_OF_BUTTONS, false)
     rotationMatrix = null;
+    currRotatingVector = null;
   }
 
   CanvasUtils.drawFigure(
@@ -126,7 +137,7 @@ function drawFrame() {
   if (rotationMatrix) {
     requestAnimationFrame(drawFrame);
   }
-  if (axis) {
+  if (currDisplayingAxis) {
     requestAnimationFrame(drawFrame);
   }
 }

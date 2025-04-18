@@ -187,4 +187,14 @@ export default class Matrix {
     }
     return new Matrix(array);
   }
+  numberMultiply(number) {
+    const output = []
+    for (let i = 0; i < this.vectors.length; i++) {
+      /** @type {Vector} */
+      let currVector = this.vectors[i];
+      currVector = currVector.scale(number)
+      output.push(currVector)
+    }
+    return new Matrix(output)
+  }
 }
