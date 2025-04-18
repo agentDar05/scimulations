@@ -10,7 +10,6 @@ export default class Lean {
         //       0,
         //       angles.xz
         //     );
-        //             console.log(matrixLean);
         //       return { lean: matrixLean, LeanInverse: matrixLeanInverse}  
         
         return {

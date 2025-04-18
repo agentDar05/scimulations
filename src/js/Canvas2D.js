@@ -76,7 +76,6 @@ export default class Canvas2D {
    * @param stroke - line color
    */
   drawLine(x1, y1, x2, y2, stroke = "black") {
-    // console.log(x1, y1, x2, y2, stroke);
     this.context.beginPath();
     this.context.moveTo(x1, y1);
     this.context.lineTo(x2, y2);

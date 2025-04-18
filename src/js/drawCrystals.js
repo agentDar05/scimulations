@@ -3,6 +3,7 @@ import Vector from "./Vector.js";
 import StaticMath from "./StaticMath.js";
 import CanvasUtils from "./CanvasUtils.js";
 import Rotate from "./Rotate.js";
+import Matrix from "./Matrix.js";
 import {
   cubic,
   cubicFigure,
@@ -12,20 +13,39 @@ import {
 const btn_rotate_axis111 = document.getElementById("btn-rotate-axis111")
 const btn_rotate_axis1_11 = document.getElementById("btn-rotate-axis1-11")
 const btn_rotate_axis_111 = document.getElementById("btn-rotate-axis-111")
-const ANGULAR_SPEED = 0.01;
+const ANGULAR_SPEED = 0.005;
 let isButtonDisabled = false
 /** @type {Matrix} */
 const CAMERA_ROTATION_MATRIX = Rotate.getRotationMatrix(0.4, 0.4, 0);
 let rotatingAngle = 0;
-
+let axis = null
 /**
  * Is set when we click on the rotation, and once the rotation is finished - must be nullified.
  *
  * @type {Matrix | null}
  */
 let rotationMatrix = null;
-
-btn_rotate_axis111.addEventListener("click", () => {
+document.querySelectorAll(".btn-rotate-axis").forEach((button) => {
+  button.addEventListener("mouseleave", () => {
+    axis = null
+  })
+})
+btn_rotate_axis111.addEventListener("mouseover", () => {
+  axis = new Matrix([new Vector([-25, -25, -25]), new Vector([25, 25, 25])]);
+  axis = Rotate.multiplyByArrayOfMatrices([axis], CAMERA_ROTATION_MATRIX)[0]
+  drawFrame();
+});
+btn_rotate_axis1_11.addEventListener("mouseover", () => {
+  axis = new Matrix([new Vector([25, -25, 25]), new Vector([-25, 25, -25])]);
+  axis = Rotate.multiplyByArrayOfMatrices([axis], CAMERA_ROTATION_MATRIX)[0]
+  drawFrame();
+});
+btn_rotate_axis_111.addEventListener("mouseover", () => {
+  axis = new Matrix([new Vector([-25, 25, 25]), new Vector([25, -25, -25])]);
+  axis = Rotate.multiplyByArrayOfMatrices([axis], CAMERA_ROTATION_MATRIX)[0]
+  drawFrame();
+});
+btn_rotate_axis111.addEventListener("click", () => {  
   rotatingAngle = 0;
   rotationMatrix = computeRotationMatrix(new Vector([1, 1, 1]));
   drawFrame();
@@ -77,9 +97,10 @@ let cube = StaticMath.moveFigure(cubicFigure, new Vector([ // center of cube is 
 ]));
 
 function drawFrame() {
-  console.log(isButtonDisabled);
-
   cubicCanvas.clear();
+  if (axis) {
+    CanvasUtils.drawLine(cubicCanvas, axis.getCol(0), axis.getCol(1))
+  }
   if (rotationMatrix) {
     isButtonDisabled = "disabled"
     changeButtonStatus(ARRAY_OF_BUTTONS, true)
@@ -101,7 +122,11 @@ function drawFrame() {
     tetragonalCanvas,
     StaticMath.moveFigure(rotatingTetragonal, tetragonalCenter)
   );
+
   if (rotationMatrix) {
+    requestAnimationFrame(drawFrame);
+  }
+  if (axis) {
     requestAnimationFrame(drawFrame);
   }
 }

@@ -21,7 +21,6 @@ describe("Matrix", () => {
           new Vector([3, 0, -3]),
         ]);
         const v = new Vector([1, 0, 0]);
-        const expected = console.log(m.subtractVector(v).toString());
         // StaticMath.assertMatrixEqual(m.subtractVector(v), )
       });
     });
@@ -206,7 +205,6 @@ describe("Matrix", () => {
          [-3 + 22, 8 + 24 + 44, 9 + 11 * 13],
        ]);
        const actual = matrix.matrixMultiply(matrix1);
-       console.log(actual.toString());
        assert.deepStrictEqual(actual, expected);
      });
    });
