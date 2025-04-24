@@ -13,6 +13,7 @@ import {
 const btn_rotate_axis111 = document.getElementById("btn-rotate-axis111")
 const btn_rotate_axis1_11 = document.getElementById("btn-rotate-axis1-11")
 const btn_rotate_axis_111 = document.getElementById("btn-rotate-axis-111")
+const btn_rotate_axis11_1 = document.getElementById("btn-rotate-axis11-1")
 const ANGULAR_SPEED = 0.005;
 let isButtonDisabled = false
 /** @type {Matrix} */
@@ -23,6 +24,7 @@ let currRotatingVector = null
 const CAMERA_VECTOR111 = leanRotationAxis(new Matrix([new Vector([-1, -1, -1]), new Vector([1, 1, 1])]), CAMERA_ROTATION_MATRIX)
 const CAMERA_VECTOR_111 = leanRotationAxis(new Matrix([new Vector([-1, 1, 1]), new Vector([1, -1, -1])]), CAMERA_ROTATION_MATRIX)
 const CAMERA_VECTOR1_11 = leanRotationAxis(new Matrix([new Vector([1, -1, 1]), new Vector([-1, 1, -1])]), CAMERA_ROTATION_MATRIX)
+const CAMERA_VECTOR11_1 = leanRotationAxis(new Matrix([new Vector([1, 1, -1]), new Vector([-1, -1, 1])]), CAMERA_ROTATION_MATRIX)
 /**
  * Is set when we click on the rotation, and once the rotation is finished - must be nullified.
  *
@@ -46,6 +48,10 @@ btn_rotate_axis_111.addEventListener("mouseover", () => {
   currDisplayingAxis = CAMERA_VECTOR_111
   drawFrame();
 });
+btn_rotate_axis11_1.addEventListener("mouseover", () => {
+  currDisplayingAxis = CAMERA_VECTOR11_1
+  drawFrame();
+});
 btn_rotate_axis111.addEventListener("click", () => {  
   rotatingAngle = 0;
   rotationMatrix = computeRotationMatrix(new Vector([1, 1, 1]));
@@ -64,11 +70,23 @@ btn_rotate_axis_111.addEventListener("click", () => {
   currRotatingVector = CAMERA_VECTOR_111
   drawFrame();
 });
+btn_rotate_axis11_1.addEventListener("click", () => {
+  rotatingAngle = 0;
+  rotationMatrix = computeRotationMatrix(new Vector([1, 1, -1]));
+  currRotatingVector = CAMERA_VECTOR11_1
+  drawFrame();
+});
 const ARRAY_OF_BUTTONS = [
   btn_rotate_axis111,
   btn_rotate_axis1_11,
-  btn_rotate_axis_111
+  btn_rotate_axis_111,
+  btn_rotate_axis11_1
 ]
+function drawFigures(canvas, figure, colors, cameraMatrix) {
+  const view = Rotate.multiplyByArrayOfMatrices(figure, cameraMatrix);
+  CanvasUtils.drawFilledFigure(canvas, view, colors)
+  CanvasUtils.drawFigure(canvas, view);
+}
 /**
  * 
  * @param {Array} arrayOfButtons 
@@ -118,10 +136,11 @@ function drawFrame() {
     rotatingAngle += ANGULAR_SPEED;
     cube = Rotate.multiplyByArrayOfMatrices(cube, rotationMatrix);
   }
-  const cubeView = Rotate.multiplyByArrayOfMatrices(cube, CAMERA_ROTATION_MATRIX);
-  CanvasUtils.drawFilledFigure(cubicCanvas, cubeView, ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",])
-  CanvasUtils.drawFigure(cubicCanvas, cubeView);
-
+  // const cubeView = Rotate.multiplyByArrayOfMatrices(cube, CAMERA_ROTATION_MATRIX);
+  // CanvasUtils.drawFilledFigure(cubicCanvas, cubeView, ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",])
+  // CanvasUtils.drawFigure(cubicCanvas, cubeView);
+  const cubicColors = ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",]
+  drawFigures(cubicCanvas, cube, cubicColors, CAMERA_ROTATION_MATRIX)
   const rotatingTetragonal = Rotate.multiplyByArrayOfMatrices(tetragonalFigure, CAMERA_ROTATION_MATRIX);
   if (rotatingAngle >= Math.PI * (2 / 3)) {
     changeButtonStatus(ARRAY_OF_BUTTONS, false)
