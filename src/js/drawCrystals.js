@@ -12,6 +12,8 @@ import {
   orthorhombic,
   orthorhombicFigure 
 } from "./LatticeSystem.js";
+import {CUBIC_DRAWING} from "./LatticeSystemDrawing.js";
+
 const btn_rotate_axis111 = document.getElementById("cubic-btn-rotate-axis111")
 const btn_rotate_axis1_11 = document.getElementById("cubic-btn-rotate-axis1-11")
 const btn_rotate_axis_111 = document.getElementById("cubic-btn-rotate-axis-111")
@@ -30,6 +32,8 @@ let cubicCurrRotatingVector = null
 let tetragonalCurrDisplayingAxis = null
 let tetragonalCurrRotatingVector = null
 
+let currentDrawing = null;
+
 const CAMERA_VECTOR111 = leanRotationAxis(new Matrix([new Vector([-1, -1, -1]), new Vector([1, 1, 1])]), CAMERA_ROTATION_MATRIX)
 const CAMERA_VECTOR_111 = leanRotationAxis(new Matrix([new Vector([-1, 1, 1]), new Vector([1, -1, -1])]), CAMERA_ROTATION_MATRIX)
 const CAMERA_VECTOR1_11 = leanRotationAxis(new Matrix([new Vector([1, -1, 1]), new Vector([-1, 1, -1])]), CAMERA_ROTATION_MATRIX)
@@ -43,10 +47,23 @@ const CAMERA_VECTOR010 = leanRotationAxis(new Matrix([new Vector([0, 1, 0]), new
  */
 let cubicRotationMatrix = null;
 let tetragonalRotationMatrix = null;
-document.querySelectorAll(".cubic-btn-rotate-axis").forEach((button) => {
+document.querySelectorAll("[data-crystal='cubic'] > button").forEach((button) => {
+  button.addEventListener("click", (e) => {
+    currentDrawing = CUBIC_DRAWING;
+    const axisIndex = Number.parseInt(e.target.getAttribute("data-axis"));
+    currentDrawing.currentRotationAxis = currentDrawing.rotationAxes[axisIndex];
+  });
+  button.addEventListener("mouseenter", (e) => {
+    currentDrawing = CUBIC_DRAWING;
+    const axisIndex = Number.parseInt(e.target.getAttribute("data-axis"));
+    currentDrawing.currentVisibleAxis = currentDrawing.rotationAxes[axisIndex];
+    drawFrame();
+  });
   button.addEventListener("mouseleave", () => {
-    cubicCurrDisplayingAxis = null
-  })
+    currentDrawing = CUBIC_DRAWING;
+    cubicCurrDisplayingAxis = null;
+    currentDrawing.currentVisibleAxis = null;
+  });
 })
 btn_rotate_axis010.addEventListener("mouseleave", () => {
   tetragonalCurrDisplayingAxis = null
@@ -55,22 +72,7 @@ btn_rotate_axis010.addEventListener("mouseover", () => {
   tetragonalCurrDisplayingAxis = CAMERA_VECTOR010
   drawFrame();
 });
-btn_rotate_axis111.addEventListener("mouseover", () => {
-  cubicCurrDisplayingAxis = CAMERA_VECTOR111
-  drawFrame();
-});
-btn_rotate_axis1_11.addEventListener("mouseover", () => {
-  cubicCurrDisplayingAxis = CAMERA_VECTOR1_11
-  drawFrame();
-});
-btn_rotate_axis_111.addEventListener("mouseover", () => {
-  cubicCurrDisplayingAxis = CAMERA_VECTOR_111
-  drawFrame();
-});
-btn_rotate_axis11_1.addEventListener("mouseover", () => {
-  cubicCurrDisplayingAxis = CAMERA_VECTOR11_1
-  drawFrame();
-});
+
 btn_rotate_axis010.addEventListener("click", () => {
   rotatingAngle = 0;  
   tetragonalRotationMatrix = StaticMath.getYMatrix(StaticMath.degreesToRadians(90))  
@@ -163,6 +165,11 @@ function drawFrame() {
   tetragonalCanvas.clear();
   orthorhombicCanvas.clear();
 
+  if(currentDrawing) {
+    /** @type {Matrix} */
+    const rotationAxis = leanRotationAxis(currentDrawing.currentVisibleAxis.rotationAxis, CAMERA_ROTATION_MATRIX);
+    CanvasUtils.drawLine(cubicCanvas, rotationAxis.getCol(0), rotationAxis.getCol(1));
+  }
   if (cubicCurrDisplayingAxis) {
     CanvasUtils.drawLine(cubicCanvas, cubicCurrDisplayingAxis.getCol(0), cubicCurrDisplayingAxis.getCol(1))
   }
