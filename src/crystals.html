@@ -5,22 +5,22 @@
     <title>Crystallography</title>
   </head>
   <body class="rotation">
-    <div style="display: flex">
+    <div class="crystal-systems">
       <div class="cubic">
         <div class="rotate-cubic"></div>
         <p class="labelCubic">cubic</p>
-        <div class="buttons-rotate">
-          <button id="btn-rotate-axis111" class="btn-rotate-axis">1 1 1</button>
-          <button id="btn-rotate-axis1-11" class="btn-rotate-axis1-11 btn-rotate-axis">
+        <div class="cubic-buttons-rotate">
+          <button id="cubic-btn-rotate-axis111" class="cubic-btn-rotate-axis">1 1 1</button>
+          <button id="cubic-btn-rotate-axis1-11" class="cubic-btn-rotate-axis">
             1
             <span style="text-decoration: overline">1</span>
             1
           </button>
-          <button id="btn-rotate-axis-111" class="btn-rotate-axis">
+          <button id="cubic-btn-rotate-axis-111" class="cubic-btn-rotate-axis">
             <span style="text-decoration: overline">1</span>
             1 1
           </button>
-          <button id="btn-rotate-axis11-1" class="btn-rotate-axis11-1 btn-rotate-axis">
+          <button id="cubic-btn-rotate-axis11-1" class="cubic-btn-rotate-axis">
             1
             1
             <span style="text-decoration: overline">1</span>
@@ -30,6 +30,15 @@
       <div class="tetragonal">
         <div class="rotate-tetragonal"></div>
         <p class="labelTetragonal">tetragonal</p>
+        <div class="tetragonal-buttons-rotate">
+          <button id="tetragonal-btn-rotate-axis010" class="tetragonal-btn-rotate-axis">0 1 0</button>
+        </div>
+      </div>
+      <div class="orthorhombic">
+        <div class="rotate-orthorhombic"></div>
+        <p class="labelOrthorhombic">orthorhombic</p>
+        <div class="orthorhombic-buttons-rotate">
+        </div>
       </div>
     </div>
     <script type="module" src="js/drawCrystals.js"></script>

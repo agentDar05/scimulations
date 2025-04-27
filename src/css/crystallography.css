@@ -8,6 +8,11 @@
   width: 300px;
   height: 300px;
 }
+.rotate-orthorhombic {
+  border: 1px solid black;
+  width: 300px;
+  height: 300px;
+}
 .labelCubic{
     margin-left: 125px;
     margin-top: 10px;
@@ -15,9 +20,21 @@
 .labelTetragonal{
     margin-left: 125px;
     margin-top: 10px;
+}
+.labelOrthorhombic{
+    margin-left: 125px;
+    margin-top: 10px;
 
 }
-.buttons-rotate{
+.cubic-buttons-rotate{
   display: flex;
   justify-content: center;
+}
+.tetragonal-buttons-rotate{
+  display: flex;
+  justify-content: center;
+}
+.crystal-systems{
+  display: flex;
+  flex-wrap: wrap;
 }

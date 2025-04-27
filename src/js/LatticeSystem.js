@@ -22,10 +22,11 @@ class LatticeSystem {
 
 const cubic = { sides: { x: 50, y: 50, z: 50 } };
 const tetragonal = { sides: { x: 50, y: 70, z: 50 } };
+const orthorhombic = { sides: { x: 50, y: 60, z: 70 } };
 
 export const cubicFigure1 = new LatticeSystem([], cubic.sides, [new Vector([1, 1, 1])])
 export const tetragonalFigure1 = new LatticeSystem([], tetragonal.sides, [])
-
+export const orthorhombicFigure1 = new LatticeSystem([], orthorhombic.sides, [])
 const tetragonalFigure = [
   new Matrix([
     new Vector([0, 0, 0]),
@@ -114,4 +115,48 @@ const cubicFigure = [
     new Vector([0, cubic.sides.y, 0]),
   ]),
 ];
-export { tetragonalFigure, cubicFigure, cubic, tetragonal }
+const orthorhombicFigure = [
+  new Matrix([
+    new Vector([0, 0, 0]),
+    new Vector([orthorhombic.sides.x, 0, 0]),
+    new Vector([orthorhombic.sides.x, 0, orthorhombic.sides.z]),
+    new Vector([0, 0, orthorhombic.sides.z]),
+  ]),
+  new Matrix([
+    new Vector([0, 0, 0]),
+    new Vector([orthorhombic.sides.x, 0, 0]),
+    new Vector([orthorhombic.sides.x, orthorhombic.sides.y, 0]),
+    new Vector([0, orthorhombic.sides.y, 0]),
+  ]),
+  new Matrix([
+    new Vector([0, 0, 0]),
+    new Vector([0, 0, orthorhombic.sides.z]),
+    new Vector([0, orthorhombic.sides.y, orthorhombic.sides.z]),
+    new Vector([0, orthorhombic.sides.y, 0]),
+  ]),
+  new Matrix([
+    new Vector([orthorhombic.sides.x, 0, 0]),
+    new Vector([orthorhombic.sides.x, 0, orthorhombic.sides.z]),
+    new Vector([orthorhombic.sides.x, orthorhombic.sides.y, orthorhombic.sides.z]),
+    new Vector([orthorhombic.sides.x, orthorhombic.sides.y, 0]),
+  ]),
+  new Matrix([
+    new Vector([0, 0, orthorhombic.sides.z]),
+    new Vector([orthorhombic.sides.x, 0, orthorhombic.sides.z]),
+    new Vector([orthorhombic.sides.x, orthorhombic.sides.y, orthorhombic.sides.z]),
+    new Vector([0, orthorhombic.sides.y, orthorhombic.sides.z]),
+  ]),
+  new Matrix([
+    new Vector([0, 0, 0]),
+    new Vector([0, 0, orthorhombic.sides.z]),
+    new Vector([orthorhombic.sides.x, 0, orthorhombic.sides.z]),
+    new Vector([orthorhombic.sides.x, 0, 0]),
+  ]),
+  new Matrix([
+    new Vector([orthorhombic.sides.x, orthorhombic.sides.y, 0]),
+    new Vector([orthorhombic.sides.x, orthorhombic.sides.y, orthorhombic.sides.z]),
+    new Vector([0, orthorhombic.sides.y, orthorhombic.sides.z]),
+    new Vector([0, orthorhombic.sides.y, 0]),
+  ]),
+];
+export { tetragonalFigure, cubicFigure, cubic, tetragonal, orthorhombic, orthorhombicFigure}
