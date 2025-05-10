@@ -1,6 +1,6 @@
 import Matrix from "./Matrix.js";
 import Vector from "./Vector.js";
-import {cubicFigure1} from "./LatticeSystem.js";
+import {cubicFigure1, tetragonalFigure1} from "./LatticeSystem.js";
 
 
 export class LatticeSystemDrawing {
@@ -45,3 +45,9 @@ export const CUBIC_DRAWING = new LatticeSystemDrawing(
         ]
 
 );
+export const TETRAGONAL_DRAWING = new LatticeSystemDrawing(
+    tetragonalFigure1,
+    [
+        new RotationAxisDrawing("010", new Matrix([new Vector([0, 1, 0]), new Vector([0, -1, 0])]))
+    ]
+)

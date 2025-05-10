@@ -10,9 +10,10 @@ import {
   tetragonal,
   tetragonalFigure,
   orthorhombic,
-  orthorhombicFigure 
+  orthorhombicFigure
 } from "./LatticeSystem.js";
-import {CUBIC_DRAWING} from "./LatticeSystemDrawing.js";
+import { CUBIC_DRAWING, TETRAGONAL_DRAWING } from "./LatticeSystemDrawing.js";
+
 
 const btn_rotate_axis111 = document.getElementById("cubic-btn-rotate-axis111")
 const btn_rotate_axis1_11 = document.getElementById("cubic-btn-rotate-axis1-11")
@@ -26,13 +27,15 @@ let tetragonalIsButtonDisabled = false
 
 /** @type {Matrix} */
 const CAMERA_ROTATION_MATRIX = Rotate.getRotationMatrix(0.4, 0.4, 0);
-let rotatingAngle = 0;
+let tetragonalRotatingAngle = 0;
+let cubicRotatingAngle = 0;
 let cubicCurrDisplayingAxis = null
 let cubicCurrRotatingVector = null
 let tetragonalCurrDisplayingAxis = null
 let tetragonalCurrRotatingVector = null
 
-let currentDrawing = null;
+let cubicCurrentDrawing = null;
+let tetragonalCurrentDrawing = null
 
 const CAMERA_VECTOR111 = leanRotationAxis(new Matrix([new Vector([-1, -1, -1]), new Vector([1, 1, 1])]), CAMERA_ROTATION_MATRIX)
 const CAMERA_VECTOR_111 = leanRotationAxis(new Matrix([new Vector([-1, 1, 1]), new Vector([1, -1, -1])]), CAMERA_ROTATION_MATRIX)
@@ -49,59 +52,39 @@ let cubicRotationMatrix = null;
 let tetragonalRotationMatrix = null;
 document.querySelectorAll("[data-crystal='cubic'] > button").forEach((button) => {
   button.addEventListener("click", (e) => {
-    currentDrawing = CUBIC_DRAWING;
-    const axisIndex = Number.parseInt(e.target.getAttribute("data-axis"));
-    currentDrawing.currentRotationAxis = currentDrawing.rotationAxes[axisIndex];
+    cubicCurrentDrawing = CUBIC_DRAWING;
+    const axisIndex = Number.parseInt(e.currentTarget.getAttribute("data-axis"));
+    cubicCurrentDrawing.currentRotationAxis = cubicCurrentDrawing.rotationAxes[axisIndex];
+    cubicRotationMatrix = computeRotationMatrix(cubicCurrentDrawing.currentRotationAxis.rotationAxis.getCol(1))
+    cubicCurrentDrawing.currentVisibleAxis = cubicCurrentDrawing.rotationAxes[axisIndex];
+    drawFrame()
   });
   button.addEventListener("mouseenter", (e) => {
-    currentDrawing = CUBIC_DRAWING;
+    cubicCurrentDrawing = CUBIC_DRAWING;
     const axisIndex = Number.parseInt(e.target.getAttribute("data-axis"));
-    currentDrawing.currentVisibleAxis = currentDrawing.rotationAxes[axisIndex];
+    cubicCurrentDrawing.currentVisibleAxis = cubicCurrentDrawing.rotationAxes[axisIndex];
     drawFrame();
   });
   button.addEventListener("mouseleave", () => {
-    currentDrawing = CUBIC_DRAWING;
-    cubicCurrDisplayingAxis = null;
-    currentDrawing.currentVisibleAxis = null;
+    cubicCurrentDrawing = CUBIC_DRAWING;
+    cubicCurrentDrawing.currentVisibleAxis = null;
+    drawFrame()
   });
 })
 btn_rotate_axis010.addEventListener("mouseleave", () => {
   tetragonalCurrDisplayingAxis = null
 });
-btn_rotate_axis010.addEventListener("mouseover", () => {
+btn_rotate_axis010.addEventListener("mouseenter", () => {
   tetragonalCurrDisplayingAxis = CAMERA_VECTOR010
   drawFrame();
 });
-
-btn_rotate_axis010.addEventListener("click", () => {
-  rotatingAngle = 0;  
-  tetragonalRotationMatrix = StaticMath.getYMatrix(StaticMath.degreesToRadians(90))  
-  tetragonalCurrRotatingVector = CAMERA_VECTOR010
-  drawFrame();
-});
-btn_rotate_axis111.addEventListener("click", () => {  
-  rotatingAngle = 0;
-  cubicRotationMatrix = computeRotationMatrix(new Vector([1, 1, 1]));
-  cubicCurrRotatingVector = CAMERA_VECTOR111
-  drawFrame();
-});
-btn_rotate_axis1_11.addEventListener("click", () => {
-  rotatingAngle = 0;
-  cubicRotationMatrix = computeRotationMatrix(new Vector([1, -1, 1]));
-  cubicCurrRotatingVector = CAMERA_VECTOR1_11
-  drawFrame();
-});
-btn_rotate_axis_111.addEventListener("click", () => {
-  rotatingAngle = 0;
-  cubicRotationMatrix = computeRotationMatrix(new Vector([-1, 1, 1]));
-  cubicCurrRotatingVector = CAMERA_VECTOR_111
-  drawFrame();
-});
-btn_rotate_axis11_1.addEventListener("click", () => {
-  rotatingAngle = 0;
-  cubicRotationMatrix = computeRotationMatrix(new Vector([1, 1, -1]));
-  cubicCurrRotatingVector = CAMERA_VECTOR11_1
-  drawFrame();
+btn_rotate_axis010.addEventListener("click", (e) => {
+  tetragonalCurrentDrawing = TETRAGONAL_DRAWING;
+  const axisIndex = Number.parseInt(e.target.getAttribute("data-axis"));
+  tetragonalCurrentDrawing.currentRotationAxis = tetragonalCurrentDrawing.rotationAxes[axisIndex];
+  tetragonalRotationMatrix = computeRotationMatrix(tetragonalCurrentDrawing.currentRotationAxis.rotationAxis.getCol(1))
+  tetragonalCurrentDrawing.currentVisibleAxis = tetragonalCurrentDrawing.rotationAxes[axisIndex];
+  drawFrame()
 });
 const CUBIC_ARRAY_OF_BUTTONS = [
   btn_rotate_axis111,
@@ -126,8 +109,8 @@ function changeButtonStatus(arrayOfButtons, status) {
   arrayOfButtons.forEach(button => button.disabled = status);
 }
 function leanRotationAxis(matrix, cameraRotation) {
-    let axis = Rotate.multiplyByArrayOfMatrices([matrix.numberMultiply(25)], cameraRotation)[0];
-    return axis;
+  let axis = Rotate.multiplyByArrayOfMatrices([matrix.numberMultiply(25)], cameraRotation)[0];
+  return axis;
 }
 
 changeButtonStatus(CUBIC_ARRAY_OF_BUTTONS, false)
@@ -164,10 +147,9 @@ function drawFrame() {
   cubicCanvas.clear();
   tetragonalCanvas.clear();
   orthorhombicCanvas.clear();
-
-  if(currentDrawing) {
+  if (cubicCurrentDrawing && cubicCurrentDrawing.currentVisibleAxis) {
     /** @type {Matrix} */
-    const rotationAxis = leanRotationAxis(currentDrawing.currentVisibleAxis.rotationAxis, CAMERA_ROTATION_MATRIX);
+    const rotationAxis = leanRotationAxis(cubicCurrentDrawing.currentVisibleAxis.rotationAxis, CAMERA_ROTATION_MATRIX);
     CanvasUtils.drawLine(cubicCanvas, rotationAxis.getCol(0), rotationAxis.getCol(1));
   }
   if (cubicCurrDisplayingAxis) {
@@ -185,17 +167,15 @@ function drawFrame() {
   if (cubicRotationMatrix) {
     cubicIsButtonDisabled = "disabled"
     changeButtonStatus(CUBIC_ARRAY_OF_BUTTONS, true)
-
-    rotatingAngle += ANGULAR_SPEED;
+    cubicRotatingAngle += ANGULAR_SPEED;
     cube = Rotate.multiplyByArrayOfMatrices(cube, cubicRotationMatrix);
   }
   if (tetragonalRotationMatrix) {
     tetragonalIsButtonDisabled = "disabled"
     changeButtonStatus(TETRAGONAL_ARRAY_OF_BUTTONS, true)
-
-    rotatingAngle += ANGULAR_SPEED;
+    tetragonalRotatingAngle += ANGULAR_SPEED;
     rotatingTetragonal = Rotate.multiplyByArrayOfMatrices(rotatingTetragonal, tetragonalRotationMatrix);
-    
+
   }
   // const cubeView = Rotate.multiplyByArrayOfMatrices(cube, CAMERA_ROTATION_MATRIX);
   // CanvasUtils.drawFilledFigure(cubicCanvas, cubeView, ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",])
@@ -208,13 +188,19 @@ function drawFrame() {
   drawFigures(cubicCanvas, cube, cubicColors, CAMERA_ROTATION_MATRIX)
   drawFigures(tetragonalCanvas, rotatingTetragonal, tetragonalColors, CAMERA_ROTATION_MATRIX)
   drawFigures(orthorhombicCanvas, rotatingOrthorhombic, orthorhombicColors, CAMERA_ROTATION_MATRIX)
-  if (rotatingAngle >= Math.PI * (2 / 3)) {
+  if (cubicRotatingAngle >= Math.PI * (2 / 3)) {
     changeButtonStatus(CUBIC_ARRAY_OF_BUTTONS, false)
-    changeButtonStatus(TETRAGONAL_ARRAY_OF_BUTTONS, false)
     cubicRotationMatrix = null;
     cubicCurrRotatingVector = null;
+    cubicCurrentDrawing.currentRotationAxis = null;
+    cubicRotatingAngle = 0;
+  }
+  if (tetragonalRotatingAngle >= Math.PI * (1 / 2)) {
+    changeButtonStatus(TETRAGONAL_ARRAY_OF_BUTTONS, false)
     tetragonalRotationMatrix = null;
-    tetragonalCurrRotatingVector = null
+    tetragonalCurrRotatingVector = null;
+    tetragonalCurrentDrawing.currentRotationAxis = null
+    tetragonalRotatingAngle = 0;
   }
 
   if (cubicRotationMatrix) {

@@ -77,6 +77,9 @@ export default class StaticMath {
    */
   static angleToPlaneXZ(vector) {
     const xzprojection = new Vector([vector.get(0), vector.get(1), 0]);
+    if (this.isVectorsEqual(xzprojection, new Vector([0, 0, 0]))) {
+      return 0
+    }
     const cos = Vector.XAXIS.dot(xzprojection) / xzprojection.length();
     let angle = Math.acos(cos)
     if (vector.get(1) > 0) {
@@ -90,8 +93,11 @@ export default class StaticMath {
    * @returns {Number}
    */
   static angleToPlaneYZ(vector) {
-    const xyprojection = new Vector([vector.get(0), vector.get(1), 0]);
-    const cos = Vector.YAXIS.dot(xyprojection) / xyprojection.length();
+    const yzprojection = new Vector([vector.get(0), vector.get(1), 0]);
+    if (this.isVectorsEqual(yzprojection, new Vector([0, 0, 0]))) {
+      return 0
+    }
+    const cos = Vector.YAXIS.dot(yzprojection) / yzprojection.length();
     let angle = Math.acos(cos);
     // If y-axis looks right and x-axis looks up, then the acos() returns correct anticlockwise angle for
     // everything that lies below X-axis. But for everything above we have 2 choices:
@@ -110,7 +116,11 @@ export default class StaticMath {
    * @returns {number}
    */
   static angleToPlaneXY(vector) {
+
     const xyprojection = new Vector([vector.get(0), 0, vector.get(2)]);
+    if (this.isVectorsEqual(xyprojection, new Vector([0, 0, 0]))) {
+      return 0
+    }
     const cos = Vector.XAXIS.dot(xyprojection) / xyprojection.length();
     let angle = Math.acos(cos);
     if (vector.get(2) < 0) {
@@ -158,7 +168,7 @@ export default class StaticMath {
    * @returns
    */
 
-  static isVectorsEqual(v1, v2, epsilon) {
+  static isVectorsEqual(v1, v2, epsilon = 0.4) {
     if (v1.dimensions !== v2.dimensions) {
       throw new Error(
         `Vectors must have the same dimensions, vector 1: ${v1.dimensions}, vector 2: ${v2.dimensions}`
