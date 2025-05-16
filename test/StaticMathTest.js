@@ -56,6 +56,7 @@ describe("#angleToPlaneYZ", () => {
     const H = new Vector([-2, -3, 3]);
     const I = new Vector([0, 1, 1]);
     const J = new Vector([1, 0, 0]);
+    const K = new Vector ([0, 0, 1])
     //https://www.geogebra.org/calculator/mxzkwwrm
     testAngleToPlaneYZ(A, 2.158798)
     testAngleToPlaneYZ(B, 2.5535)
@@ -67,6 +68,7 @@ describe("#angleToPlaneYZ", () => {
     testAngleToPlaneYZ(H, -2.553)
     testAngleToPlaneYZ(I, 0)
     testAngleToPlaneYZ(J, Math.PI / 2)
+    testAngleToPlaneYZ(K, 0)
   });
 });
 describe("#angleToPlaneXZ", () => {
@@ -84,6 +86,8 @@ describe("#angleToPlaneXZ", () => {
     const H = new Vector([-2, -3, 3]);
     const I = new Vector([1, 0, 1]);
     const J = new Vector([0, 1, 0]);
+    const K = new Vector([0, 0, 1])
+
     //https://www.geogebra.org/calculator/mxzkwwrm
     testAngleToPlaneXZ(A, 0.588)
     testAngleToPlaneXZ(B, 0.9827)
@@ -95,6 +99,7 @@ describe("#angleToPlaneXZ", () => {
     testAngleToPlaneXZ(H, 2.158)
     testAngleToPlaneXZ(I, 0)
     testAngleToPlaneXZ(J, -(Math.PI / 2))
+    testAngleToPlaneXZ(K, 0)
   });
 });
 describe("#angleToPlaneXY", () => {
@@ -112,6 +117,8 @@ describe("#angleToPlaneXY", () => {
     const H = new Vector([-2, -3, 3]);
     const I = new Vector([0, 1, 1]);
     const J = new Vector([1, 0, 0]);
+    const K = new Vector([0, 1, 0])
+
     //https://www.geogebra.org/calculator/mxzkwwrm
     assertVectorAtAngleToXYPlane(A, 45)
     assertVectorAtAngleToXYPlane(B, -56.31)
@@ -123,6 +130,8 @@ describe("#angleToPlaneXY", () => {
     assertVectorAtAngleToXYPlane(H, 123.69)
     assertVectorAtAngleToXYPlane(I, 90)
     assertVectorAtAngleToXYPlane(J, 0)
+    assertVectorAtAngleToXYPlane(K, 0)
+
   });
 });
 
