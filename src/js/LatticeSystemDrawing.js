@@ -16,10 +16,15 @@ export class LatticeSystemDrawing {
     currentVisibleAxis;
     /** {@type Matrix[]} */
     figure;
+    /** {@type number} */
+    rotatingAngle;
+
     /**
      *
      * @param {LatticeSystem} latticeSystem
      * @param {RotationAxisDrawing[]} rotationAxes
+     * @param {Canvas2D} canvas
+     * @param {string[]} colors
      */
     constructor(latticeSystem, rotationAxes, canvas, colors) {
         this.rotationAxes = rotationAxes;

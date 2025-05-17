@@ -40,6 +40,13 @@ let rotatingAngle = 0;
 function changeButtonStatus(arrayOfButtons, status) {
   arrayOfButtons.forEach(button => button.disabled = status);
 }
+
+/**
+ *
+ * @param {Matrix} matrix
+ * @param {Matrix} cameraRotation
+ * @return {Matrix}
+ */
 function leanRotationAxis(matrix, cameraRotation) {
   return Rotate.multiplyByArrayOfMatrices([matrix.numberMultiply(25)], cameraRotation)[0];
 }
@@ -88,27 +95,21 @@ changeButtonStatus(ARRAY_OF_BUTTONS, false)
 function drawFrame() {
   if (currentFigure) {
     /** @type {Matrix[]} */
-    let figure = currentFigure.figure;
     currentFigure.canvas.clear()
     if (currentFigure.currentVisibleAxis) {
       const rotationAxis = leanRotationAxis(currentFigure.currentVisibleAxis.rotationAxis, CAMERA_ROTATION_MATRIX);
       CanvasUtils.drawLine(currentFigure.canvas, rotationAxis.getCol(0), rotationAxis.getCol(1));
     }
-    if (currentFigure.currentRotationAxis) {
-      const rotationAxis = leanRotationAxis(currentFigure.currentVisibleAxis, CAMERA_ROTATION_MATRIX);
-      CanvasUtils.drawLine(currentFigure.canvas, rotationAxis.getCol(0), rotationAxis.getCol(1));
-    }
     if (rotationMatrix) {
       changeButtonStatus(ARRAY_OF_BUTTONS, true)
       rotatingAngle += ANGULAR_SPEED;
-      figure = Rotate.multiplyByArrayOfMatrices(figure, rotationMatrix);
+      currentFigure.figure = Rotate.multiplyByArrayOfMatrices(currentFigure.figure, rotationMatrix);
     }
-    drawFigures(currentFigure.canvas, figure, currentFigure.colors, CAMERA_ROTATION_MATRIX)
+    drawFigures(currentFigure.canvas, currentFigure.figure, currentFigure.colors, CAMERA_ROTATION_MATRIX);
   }
+  requestAnimationFrame(() => drawFrame());
 }
-requestAnimationFrame(() => {
-  drawFrame();
-});
+requestAnimationFrame(() => drawFrame());
 
 function computeRotationMatrix(rotationAxis) {
     const rotationMatrix = Rotate.getRotationMatrix(ANGULAR_SPEED, 0, 0);
