@@ -1,18 +1,10 @@
-import Canvas2D from "./Canvas2D.js";
 import Vector from "./Vector.js";
 import StaticMath from "./StaticMath.js";
 import CanvasUtils from "./CanvasUtils.js";
 import Rotate from "./Rotate.js";
-import Matrix from "./Matrix.js";
-import {
-  cubic,
-  cubicFigure,
-  tetragonal,
-  tetragonalFigure,
-  orthorhombic,
-  orthorhombicFigure
-} from "./LatticeSystem.js";
-import { CUBIC_DRAWING, TETRAGONAL_DRAWING, ORTHORHOMBIC_DRAWING } from "./LatticeSystemDrawing.js";
+import {cubic, orthorhombic, tetragonal} from "./LatticeSystem.js";
+import {CUBIC_DRAWING, ORTHORHOMBIC_DRAWING, TETRAGONAL_DRAWING} from "./LatticeSystemDrawing.js";
+
 const tetragonalCanvas = TETRAGONAL_DRAWING.canvas
 const cubicCanvas = CUBIC_DRAWING.canvas
 const orthorhombicCanvas = ORTHORHOMBIC_DRAWING.canvas
@@ -34,24 +26,12 @@ const figures = {
   cubic: CUBIC_DRAWING,
   tetragonal: TETRAGONAL_DRAWING
 }
+/** @type {LatticeSystemDrawing} */
 let currentFigure = null;
+/** @type {Matrix} */
 let rotationMatrix = null;
+/** @type {number} */
 let rotatingAngle = 0;
-let cube = StaticMath.moveFigure(cubicFigure, new Vector([ // center of cube is now at the center of coordinates
-  cubic.sides.x / 2,
-  cubic.sides.y / 2,
-  cubic.sides.z / 2,
-]));
-let rotatingTetragonal = StaticMath.moveFigure(tetragonalFigure, new Vector([
-  tetragonal.sides.x / 2,
-  tetragonal.sides.y / 2,
-  tetragonal.sides.z / 2,
-]));
-let rotatingOrthorhombic = StaticMath.moveFigure(orthorhombicFigure, new Vector([
-  orthorhombic.sides.x / 2,
-  orthorhombic.sides.y / 2,
-  orthorhombic.sides.z / 2,
-]));
 /**
  * 
  * @param {Array} arrayOfButtons 
@@ -61,17 +41,24 @@ function changeButtonStatus(arrayOfButtons, status) {
   arrayOfButtons.forEach(button => button.disabled = status);
 }
 function leanRotationAxis(matrix, cameraRotation) {
-  let axis = Rotate.multiplyByArrayOfMatrices([matrix.numberMultiply(25)], cameraRotation)[0];
-  return axis;
+  return Rotate.multiplyByArrayOfMatrices([matrix.numberMultiply(25)], cameraRotation)[0];
 }
+
+/**
+ *
+ * @param {Canvas2D} canvas
+ * @param {Matrix[]} figure
+ * @param {string[]} colors
+ * @param {Matrix} cameraMatrix
+ */
 function drawFigures(canvas, figure, colors, cameraMatrix) {
   const view = Rotate.multiplyByArrayOfMatrices(figure, cameraMatrix);
   CanvasUtils.drawFilledFigure(canvas, view, colors)
   CanvasUtils.drawFigure(canvas, view);
 }
-drawFigures(cubicCanvas, cube, CUBIC_DRAWING.colors, CAMERA_ROTATION_MATRIX)
-drawFigures(tetragonalCanvas, rotatingTetragonal, TETRAGONAL_DRAWING.colors, CAMERA_ROTATION_MATRIX)
-drawFigures(orthorhombicCanvas, rotatingOrthorhombic, ORTHORHOMBIC_DRAWING.colors, CAMERA_ROTATION_MATRIX)
+drawFigures(cubicCanvas, CUBIC_DRAWING.figure, CUBIC_DRAWING.colors, CAMERA_ROTATION_MATRIX);
+drawFigures(tetragonalCanvas, TETRAGONAL_DRAWING.figure, TETRAGONAL_DRAWING.colors, CAMERA_ROTATION_MATRIX);
+drawFigures(orthorhombicCanvas, ORTHORHOMBIC_DRAWING.figure, ORTHORHOMBIC_DRAWING.colors, CAMERA_ROTATION_MATRIX);
 
 document.querySelectorAll(".rotate-buttons > button").forEach((button) => {
   button.addEventListener("click", (e) => {
@@ -100,7 +87,8 @@ document.querySelectorAll(".rotate-buttons > button").forEach((button) => {
 changeButtonStatus(ARRAY_OF_BUTTONS, false)
 function drawFrame() {
   if (currentFigure) {
-    let figure = currentFigure
+    /** @type {Matrix[]} */
+    let figure = currentFigure.figure;
     currentFigure.canvas.clear()
     if (currentFigure.currentVisibleAxis) {
       const rotationAxis = leanRotationAxis(currentFigure.currentVisibleAxis.rotationAxis, CAMERA_ROTATION_MATRIX);

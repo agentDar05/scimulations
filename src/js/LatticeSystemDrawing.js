@@ -1,7 +1,8 @@
 import Matrix from "./Matrix.js";
 import Vector from "./Vector.js";
 import Canvas2D from "./Canvas2D.js";
-import {cubicFigure1, orthorhombicFigure1, tetragonalFigure1} from "./LatticeSystem.js";
+import {cubic, orthorhombic, tetragonal} from "./LatticeSystem.js";
+import StaticMath from "./StaticMath.js";
 
 
 export class LatticeSystemDrawing {
@@ -13,17 +14,23 @@ export class LatticeSystemDrawing {
     currentRotationAxis;
     /** @type {RotationAxisDrawing} */
     currentVisibleAxis;
+    /** {@type Matrix[]} */
+    figure;
     /**
      *
      * @param {LatticeSystem} latticeSystem
      * @param {RotationAxisDrawing[]} rotationAxes
      */
     constructor(latticeSystem, rotationAxes, canvas, colors) {
-        this.latticeSystem = latticeSystem;
         this.rotationAxes = rotationAxes;
         this.canvas = canvas
         this.colors = colors
-
+        this.latticeSystem = latticeSystem;
+        this.figure = StaticMath.moveFigure(latticeSystem.sides, new Vector([ // center of cube is now at the center of coordinates
+            latticeSystem.sideLengths.x / 2,
+            latticeSystem.sideLengths.y / 2,
+            latticeSystem.sideLengths.z / 2,
+        ]));
     }
 }
 
@@ -50,7 +57,7 @@ const orthorhombicCanvas = new Canvas2D(
   document.querySelector(".rotate-orthorhombic"), { width: CANVAS_WIDTH, height: CANVAS_HEIGHT }
 );
 export const CUBIC_DRAWING = new LatticeSystemDrawing(
-        cubicFigure1,
+        cubic,
         [
             new RotationAxisDrawing("111", new Matrix([new Vector([-1, -1, -1]), new Vector([1, 1, 1])])),
             new RotationAxisDrawing("-111", new Matrix([new Vector([-1, 1, 1]), new Vector([1, -1, -1])])),
@@ -63,7 +70,7 @@ export const CUBIC_DRAWING = new LatticeSystemDrawing(
 
 );
 export const TETRAGONAL_DRAWING = new LatticeSystemDrawing(
-    tetragonalFigure1,
+    tetragonal,
     [
         new RotationAxisDrawing("010", new Matrix([new Vector([0, 1, 0]), new Vector([0, -1, 0])]))
     ],
@@ -72,7 +79,7 @@ export const TETRAGONAL_DRAWING = new LatticeSystemDrawing(
 
 )
 export const ORTHORHOMBIC_DRAWING = new LatticeSystemDrawing(
-    orthorhombicFigure1,
+    orthorhombic,
     [],
     orthorhombicCanvas,
     ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",]
