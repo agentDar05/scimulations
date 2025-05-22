@@ -14,9 +14,9 @@ export class LatticeSystemDrawing {
     currentRotationAxis;
     /** @type {RotationAxisDrawing} */
     currentVisibleAxis;
-    /** {@type Matrix[]} */
+    /** {@type {Matrix[]}} */
     figure;
-    /** {@type number} */
+    /** {@type {number}} */
     rotatingAngle;
 
     /**
@@ -26,11 +26,12 @@ export class LatticeSystemDrawing {
      * @param {Canvas2D} canvas
      * @param {string[]} colors
      */
-    constructor(latticeSystem, rotationAxes, canvas, colors) {
+    constructor(latticeSystem, rotationAxes, rotatingAngle, canvas, colors) {
         this.rotationAxes = rotationAxes;
         this.canvas = canvas
         this.colors = colors
         this.latticeSystem = latticeSystem;
+        this.rotatingAngle = rotatingAngle;
         this.figure = StaticMath.moveFigure(latticeSystem.sides, new Vector([ // center of cube is now at the center of coordinates
             latticeSystem.sideLengths.x / 2,
             latticeSystem.sideLengths.y / 2,
@@ -69,6 +70,7 @@ export const CUBIC_DRAWING = new LatticeSystemDrawing(
             new RotationAxisDrawing("1-11", new Matrix([new Vector([1, -1, 1]), new Vector([-1, 1, -1])])),
             new RotationAxisDrawing("11-1", new Matrix([new Vector([1, 1, -1]), new Vector([-1, -1, 1])])),
     ],
+    Math.PI * (2 / 3),
     cubicCanvas, 
     ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",]
 
@@ -79,6 +81,7 @@ export const TETRAGONAL_DRAWING = new LatticeSystemDrawing(
     [
         new RotationAxisDrawing("010", new Matrix([new Vector([0, 1, 0]), new Vector([0, -1, 0])]))
     ],
+    Math.PI * (1 / 2),
     tetragonalCanvas,
     ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",]
 
@@ -86,6 +89,7 @@ export const TETRAGONAL_DRAWING = new LatticeSystemDrawing(
 export const ORTHORHOMBIC_DRAWING = new LatticeSystemDrawing(
     orthorhombic,
     [],
+    Math.PI,
     orthorhombicCanvas,
     ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",]
 

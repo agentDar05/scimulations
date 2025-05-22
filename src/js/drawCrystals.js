@@ -105,6 +105,12 @@ function drawFrame() {
       rotatingAngle += ANGULAR_SPEED;
       currentFigure.figure = Rotate.multiplyByArrayOfMatrices(currentFigure.figure, rotationMatrix);
     }
+    if (rotatingAngle >= currentFigure.rotatingAngle) {
+      changeButtonStatus(ARRAY_OF_BUTTONS, false)
+      currentFigure.currentVisibleAxis = null;
+      rotationMatrix = null
+      rotatingAngle = 0
+    }
     drawFigures(currentFigure.canvas, currentFigure.figure, currentFigure.colors, CAMERA_ROTATION_MATRIX);
   }
   requestAnimationFrame(() => drawFrame());
