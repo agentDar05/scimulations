@@ -10,21 +10,30 @@ const cubicCanvas = CUBIC_DRAWING.canvas
 const orthorhombicCanvas = ORTHORHOMBIC_DRAWING.canvas
 const ANGULAR_SPEED = 0.005;
 const CAMERA_ROTATION_MATRIX = Rotate.getRotationMatrix(0.4, 0.4, 0);
-const btn_rotate_axis111 = document.getElementById("cubic-btn-rotate-axis111")
-const btn_rotate_axis1_11 = document.getElementById("cubic-btn-rotate-axis1-11")
-const btn_rotate_axis_111 = document.getElementById("cubic-btn-rotate-axis-111")
-const btn_rotate_axis11_1 = document.getElementById("cubic-btn-rotate-axis11-1")
-const btn_rotate_axis010 = document.getElementById("tetragonal-btn-rotate-axis010")
+const cubic_btn_rotate_axis111 = document.getElementById("cubic-btn-rotate-axis111")
+const cubic_btn_rotate_axis1_11 = document.getElementById("cubic-btn-rotate-axis1-11")
+const cubic_btn_rotate_axis_111 = document.getElementById("cubic-btn-rotate-axis-111")
+const cubic_btn_rotate_axis11_1 = document.getElementById("cubic-btn-rotate-axis11-1")
+const tetragonal_btn_rotate_axis010 = document.getElementById("tetragonal-btn-rotate-axis010")
+const orthorhombic_btn_rotate_axis100 = document.getElementById("orthorhombic-btn-rotate-axis100")
+const orthorhombic_btn_rotate_axis010 = document.getElementById("orthorhombic-btn-rotate-axis010")
+const orthorhombic_btn_rotate_axis001 = document.getElementById("orthorhombic-btn-rotate-axis001")
+
+
 const ARRAY_OF_BUTTONS = [
-  btn_rotate_axis111,
-  btn_rotate_axis1_11,
-  btn_rotate_axis_111,
-  btn_rotate_axis11_1,
-  btn_rotate_axis010
+  cubic_btn_rotate_axis111,
+  cubic_btn_rotate_axis1_11,
+  cubic_btn_rotate_axis_111,
+  cubic_btn_rotate_axis11_1,
+  tetragonal_btn_rotate_axis010,
+  orthorhombic_btn_rotate_axis100,
+  orthorhombic_btn_rotate_axis010,
+  orthorhombic_btn_rotate_axis001
 ]
 const figures = {
   cubic: CUBIC_DRAWING,
-  tetragonal: TETRAGONAL_DRAWING
+  tetragonal: TETRAGONAL_DRAWING,
+  orthorhombic: ORTHORHOMBIC_DRAWING
 }
 /** @type {LatticeSystemDrawing} */
 let currentFigure = null;

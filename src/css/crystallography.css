@@ -5,8 +5,8 @@
 }
 
 .crystal-label {
-    margin-left: 125px;
-    margin-top: 10px;
+    display: flex;
+    justify-content: center;
 }
 
 .rotate-buttons {

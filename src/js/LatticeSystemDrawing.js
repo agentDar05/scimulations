@@ -88,7 +88,13 @@ export const TETRAGONAL_DRAWING = new LatticeSystemDrawing(
 )
 export const ORTHORHOMBIC_DRAWING = new LatticeSystemDrawing(
     orthorhombic,
-    [],
+    [
+        new RotationAxisDrawing("100", new Matrix([new Vector([1, 0, 0]), new Vector([-1, 0, 0])])),
+        new RotationAxisDrawing("010", new Matrix([new Vector([0, 1, 0]), new Vector([0, -1, 0])])),
+        new RotationAxisDrawing("001", new Matrix([new Vector([0, 0, 1]), new Vector([0, 0, -1])])),
+
+
+    ],
     Math.PI,
     orthorhombicCanvas,
     ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",]
