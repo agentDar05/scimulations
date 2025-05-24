@@ -1,20 +1,34 @@
-.drawing {
-    border: 1px solid black;
-    width: 300px;
-    height: 300px;
+:root {
+    --border-color: #dee2e6;
+    --border-radius: 0.375rem;
+}
+html {
+    font-family: sans-serif;
 }
 
-.crystal-label {
-    display: flex;
-    justify-content: center;
-}
-
-.rotate-buttons {
-    display: flex;
-    justify-content: center;
-}
 
 .crystal-systems {
     display: flex;
     flex-wrap: wrap;
+    gap: .5rem;
+
+    .drawing {
+        width: 300px;
+        height: 300px;
+    }
+    .crystal-system {
+        border: 1px var(--border-color) solid;
+        border-radius: var(--border-radius);
+        padding: 1rem;
+    }
+    .crystal-label {
+        display: flex;
+        justify-content: center;
+        margin: 0;
+    }
+    .rotate-buttons {
+        display: flex;
+        justify-content: center;
+        gap: .2rem;
+    }
 }
