@@ -2,38 +2,31 @@ import Vector from "./Vector.js";
 import StaticMath from "./StaticMath.js";
 import CanvasUtils from "./CanvasUtils.js";
 import Rotate from "./Rotate.js";
-import {cubic, orthorhombic, tetragonal} from "./LatticeSystem.js";
-import {CUBIC_DRAWING, ORTHORHOMBIC_DRAWING, TETRAGONAL_DRAWING} from "./LatticeSystemDrawing.js";
+import { monoclinic } from "./LatticeSystem.js";
+import {CUBIC_DRAWING, MONOCLINIC_DRAWING, ORTHORHOMBIC_DRAWING, TETRAGONAL_DRAWING} from "./LatticeSystemDrawing.js";
 
 const tetragonalCanvas = TETRAGONAL_DRAWING.canvas
 const cubicCanvas = CUBIC_DRAWING.canvas
 const orthorhombicCanvas = ORTHORHOMBIC_DRAWING.canvas
+const monoclinicCanvas = MONOCLINIC_DRAWING.canvas
 const ANGULAR_SPEED = 0.005;
 const CAMERA_ROTATION_MATRIX = Rotate.getRotationMatrix(0.4, 0.4, 0);
-const cubic_btn_rotate_axis111 = document.getElementById("cubic-btn-rotate-axis111")
-const cubic_btn_rotate_axis1_11 = document.getElementById("cubic-btn-rotate-axis1-11")
-const cubic_btn_rotate_axis_111 = document.getElementById("cubic-btn-rotate-axis-111")
-const cubic_btn_rotate_axis11_1 = document.getElementById("cubic-btn-rotate-axis11-1")
-const tetragonal_btn_rotate_axis010 = document.getElementById("tetragonal-btn-rotate-axis010")
-const orthorhombic_btn_rotate_axis100 = document.getElementById("orthorhombic-btn-rotate-axis100")
-const orthorhombic_btn_rotate_axis010 = document.getElementById("orthorhombic-btn-rotate-axis010")
-const orthorhombic_btn_rotate_axis001 = document.getElementById("orthorhombic-btn-rotate-axis001")
-
-
 const ARRAY_OF_BUTTONS = [
-  cubic_btn_rotate_axis111,
-  cubic_btn_rotate_axis1_11,
-  cubic_btn_rotate_axis_111,
-  cubic_btn_rotate_axis11_1,
-  tetragonal_btn_rotate_axis010,
-  orthorhombic_btn_rotate_axis100,
-  orthorhombic_btn_rotate_axis010,
-  orthorhombic_btn_rotate_axis001
+  document.getElementById("cubic-btn-rotate-axis111"),
+  document.getElementById("cubic-btn-rotate-axis1-11"),
+  document.getElementById("cubic-btn-rotate-axis-111"),
+  document.getElementById("cubic-btn-rotate-axis11-1"),
+  document.getElementById("tetragonal-btn-rotate-axis010"),
+  document.getElementById("orthorhombic-btn-rotate-axis100"),
+  document.getElementById("orthorhombic-btn-rotate-axis010"),
+  document.getElementById("orthorhombic-btn-rotate-axis001"),
+  document.getElementById("monoclinic-btn-rotate-axis001")
 ]
 const figures = {
   cubic: CUBIC_DRAWING,
   tetragonal: TETRAGONAL_DRAWING,
-  orthorhombic: ORTHORHOMBIC_DRAWING
+  orthorhombic: ORTHORHOMBIC_DRAWING,
+  monoclinic: MONOCLINIC_DRAWING
 }
 /** @type {LatticeSystemDrawing} */
 let currentFigure = null;
@@ -56,8 +49,8 @@ function changeButtonStatus(arrayOfButtons, status) {
  * @param {Matrix} cameraRotation
  * @return {Matrix}
  */
-function leanRotationAxis(matrix, cameraRotation) {
-  return Rotate.multiplyByArrayOfMatrices([matrix.numberMultiply(25)], cameraRotation)[0];
+function leanRotationAxis(matrix, cameraRotation, scalar) {
+  return Rotate.multiplyByArrayOfMatrices([matrix.numberMultiply(scalar)], cameraRotation)[0];
 }
 
 /**
@@ -75,8 +68,8 @@ function drawFigures(canvas, figure, colors, cameraMatrix) {
 drawFigures(cubicCanvas, CUBIC_DRAWING.figure, CUBIC_DRAWING.colors, CAMERA_ROTATION_MATRIX);
 drawFigures(tetragonalCanvas, TETRAGONAL_DRAWING.figure, TETRAGONAL_DRAWING.colors, CAMERA_ROTATION_MATRIX);
 drawFigures(orthorhombicCanvas, ORTHORHOMBIC_DRAWING.figure, ORTHORHOMBIC_DRAWING.colors, CAMERA_ROTATION_MATRIX);
-
-document.querySelectorAll(".rotate-buttons > button").forEach((button) => {
+drawFigures(monoclinicCanvas, MONOCLINIC_DRAWING.figure, MONOCLINIC_DRAWING.colors, CAMERA_ROTATION_MATRIX);
+document.querySelectorAll('[data-axis]').forEach((button) => {
   button.addEventListener("click", (e) => {
     const axisIndex = Number.parseInt(e.currentTarget.getAttribute("data-axis"));
     let figureId = e.currentTarget.dataset.figure
@@ -86,7 +79,7 @@ document.querySelectorAll(".rotate-buttons > button").forEach((button) => {
     currentFigure.currentVisibleAxis = currentFigure.rotationAxes[axisIndex];
     drawFrame()
   })
-  button.addEventListener("mouseenter", (e) => {
+  button.addEventListener("mouseover", (e) => {
     let figureId = e.currentTarget.dataset.figure
     currentFigure = figures[figureId]
     const axisIndex = Number.parseInt(e.target.getAttribute("data-axis"));
@@ -106,8 +99,9 @@ function drawFrame() {
     /** @type {Matrix[]} */
     currentFigure.canvas.clear()
     if (currentFigure.currentVisibleAxis) {
-      const rotationAxis = leanRotationAxis(currentFigure.currentVisibleAxis.rotationAxis, CAMERA_ROTATION_MATRIX);
+      const rotationAxis = leanRotationAxis(currentFigure.currentVisibleAxis.rotationAxis, CAMERA_ROTATION_MATRIX, currentFigure.currentVisibleAxis.scalar);
       CanvasUtils.drawLine(currentFigure.canvas, rotationAxis.getCol(0), rotationAxis.getCol(1));
+
     }
     if (rotationMatrix) {
       changeButtonStatus(ARRAY_OF_BUTTONS, true)
@@ -116,7 +110,6 @@ function drawFrame() {
     }
     if (rotatingAngle >= currentFigure.rotatingAngle) {
       changeButtonStatus(ARRAY_OF_BUTTONS, false)
-      currentFigure.currentVisibleAxis = null;
       rotationMatrix = null
       rotatingAngle = 0
     }

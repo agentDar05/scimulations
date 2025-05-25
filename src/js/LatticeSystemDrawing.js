@@ -1,10 +1,8 @@
 import Matrix from "./Matrix.js";
 import Vector from "./Vector.js";
 import Canvas2D from "./Canvas2D.js";
-import {cubic, orthorhombic, tetragonal} from "./LatticeSystem.js";
+import { cubic, orthorhombic, tetragonal, monoclinic} from "./LatticeSystem.js";
 import StaticMath from "./StaticMath.js";
-
-
 export class LatticeSystemDrawing {
     /** @type {LatticeSystem} */
     latticeSystem;
@@ -32,7 +30,7 @@ export class LatticeSystemDrawing {
         this.colors = colors
         this.latticeSystem = latticeSystem;
         this.rotatingAngle = rotatingAngle;
-        this.figure = StaticMath.moveFigure(latticeSystem.sides, new Vector([ // center of cube is now at the center of coordinates
+        this.figure = StaticMath.moveFigure(latticeSystem.sides, new Vector([ // center of figure is now at the center of coordinates
             latticeSystem.sideLengths.x / 2,
             latticeSystem.sideLengths.y / 2,
             latticeSystem.sideLengths.z / 2,
@@ -45,10 +43,12 @@ class RotationAxisDrawing {
     label;
     /** @type {Matrix} */
     rotationAxis;
-
-    constructor(label, rotationAxis) {
+    /**@type {number} */
+    scalar
+    constructor(label, rotationAxis, scalar) {
         this.label = label;
         this.rotationAxis = rotationAxis;
+        this.scalar = scalar
     }
 }
 const CANVAS_HEIGHT = 300;
@@ -62,13 +62,16 @@ const cubicCanvas = new Canvas2D(
 const orthorhombicCanvas = new Canvas2D(
   document.querySelector(".rotate-orthorhombic"), { width: CANVAS_WIDTH, height: CANVAS_HEIGHT }
 );
+const monoclinicCanvas = new Canvas2D(
+    document.querySelector(".rotate-monoclinic"), { width: CANVAS_WIDTH, height: CANVAS_HEIGHT }
+  );
 export const CUBIC_DRAWING = new LatticeSystemDrawing(
         cubic,
         [
-            new RotationAxisDrawing("111", new Matrix([new Vector([-1, -1, -1]), new Vector([1, 1, 1])])),
-            new RotationAxisDrawing("-111", new Matrix([new Vector([-1, 1, 1]), new Vector([1, -1, -1])])),
-            new RotationAxisDrawing("1-11", new Matrix([new Vector([1, -1, 1]), new Vector([-1, 1, -1])])),
-            new RotationAxisDrawing("11-1", new Matrix([new Vector([1, 1, -1]), new Vector([-1, -1, 1])])),
+            new RotationAxisDrawing("111", new Matrix([new Vector([-1, -1, -1]), new Vector([1, 1, 1])]), 25),
+            new RotationAxisDrawing("-111", new Matrix([new Vector([-1, 1, 1]), new Vector([1, -1, -1])]), 25),
+            new RotationAxisDrawing("1-11", new Matrix([new Vector([1, -1, 1]), new Vector([-1, 1, -1])]), 25),
+            new RotationAxisDrawing("11-1", new Matrix([new Vector([1, 1, -1]), new Vector([-1, -1, 1])]), 25),
     ],
     Math.PI * (2 / 3),
     cubicCanvas, 
@@ -79,7 +82,7 @@ export const CUBIC_DRAWING = new LatticeSystemDrawing(
 export const TETRAGONAL_DRAWING = new LatticeSystemDrawing(
     tetragonal,
     [
-        new RotationAxisDrawing("010", new Matrix([new Vector([0, 1, 0]), new Vector([0, -1, 0])]))
+        new RotationAxisDrawing("010", new Matrix([new Vector([0, 1, 0]), new Vector([0, -1, 0])]), 35)
     ],
     Math.PI * (1 / 2),
     tetragonalCanvas,
@@ -89,14 +92,22 @@ export const TETRAGONAL_DRAWING = new LatticeSystemDrawing(
 export const ORTHORHOMBIC_DRAWING = new LatticeSystemDrawing(
     orthorhombic,
     [
-        new RotationAxisDrawing("100", new Matrix([new Vector([1, 0, 0]), new Vector([-1, 0, 0])])),
-        new RotationAxisDrawing("010", new Matrix([new Vector([0, 1, 0]), new Vector([0, -1, 0])])),
-        new RotationAxisDrawing("001", new Matrix([new Vector([0, 0, 1]), new Vector([0, 0, -1])])),
-
-
+        new RotationAxisDrawing("100", new Matrix([new Vector([1, 0, 0]), new Vector([-1, 0, 0])]), 35),
+        new RotationAxisDrawing("010", new Matrix([new Vector([0, 1, 0]), new Vector([0, -1, 0])]), 35),
+        new RotationAxisDrawing("001", new Matrix([new Vector([0, 0, 1]), new Vector([0, 0, -1])]), 35),
     ],
     Math.PI,
     orthorhombicCanvas,
+    ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",]
+
+)
+export const MONOCLINIC_DRAWING = new LatticeSystemDrawing(
+    monoclinic,
+    [
+        new RotationAxisDrawing("100", new Matrix([new Vector([0, 0, 1]), new Vector([0, 0, -1])]), 65)
+    ],
+    Math.PI,
+    monoclinicCanvas,
     ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",]
 
 )
