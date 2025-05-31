@@ -56,7 +56,7 @@ describe("#angleToPlaneYZ", () => {
     const H = new Vector([-2, -3, 3]);
     const I = new Vector([0, 1, 1]);
     const J = new Vector([1, 0, 0]);
-    const K = new Vector ([0, 0, 1])
+    const K = new Vector([0, 0, 1])
     //https://www.geogebra.org/calculator/mxzkwwrm
     testAngleToPlaneYZ(A, 2.158798)
     testAngleToPlaneYZ(B, 2.5535)
@@ -94,7 +94,7 @@ describe("#angleToPlaneXZ", () => {
     testAngleToPlaneXZ(C, -2.356)
     testAngleToPlaneXZ(D, -2.677) //.
     testAngleToPlaneXZ(E, -(Math.PI / 4));
-    testAngleToPlaneXZ(F, -0.4637) 
+    testAngleToPlaneXZ(F, -0.4637)
     testAngleToPlaneXZ(G, 1.8924)
     testAngleToPlaneXZ(H, 2.158)
     testAngleToPlaneXZ(I, 0)

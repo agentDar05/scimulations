@@ -2,15 +2,13 @@ import Vector from "./Vector.js";
 import StaticMath from "./StaticMath.js";
 import CanvasUtils from "./CanvasUtils.js";
 import Rotate from "./Rotate.js";
-import { monoclinic } from "./LatticeSystem.js";
-import {CUBIC_DRAWING, MONOCLINIC_DRAWING, ORTHORHOMBIC_DRAWING, TETRAGONAL_DRAWING} from "./LatticeSystemDrawing.js";
+import {CUBIC_DRAWING, MONOCLINIC_DRAWING, ORTHORHOMBIC_DRAWING, TETRAGONAL_DRAWING, TRIGONAL_DRAWING, TRICLINIC_DRAWING, HEXAGONAL_DRAWING} from "./LatticeSystemDrawing.js";
+import { hexagonal } from "./LatticeSystem.js";
 
-const tetragonalCanvas = TETRAGONAL_DRAWING.canvas
-const cubicCanvas = CUBIC_DRAWING.canvas
-const orthorhombicCanvas = ORTHORHOMBIC_DRAWING.canvas
-const monoclinicCanvas = MONOCLINIC_DRAWING.canvas
 const ANGULAR_SPEED = 0.005;
+// const CAMERA_ROTATION_MATRIX = Rotate.getRotationMatrix(0, 0, 0);
 const CAMERA_ROTATION_MATRIX = Rotate.getRotationMatrix(0.4, 0.4, 0);
+
 const ARRAY_OF_BUTTONS = [
   document.getElementById("cubic-btn-rotate-axis111"),
   document.getElementById("cubic-btn-rotate-axis1-11"),
@@ -20,13 +18,30 @@ const ARRAY_OF_BUTTONS = [
   document.getElementById("orthorhombic-btn-rotate-axis100"),
   document.getElementById("orthorhombic-btn-rotate-axis010"),
   document.getElementById("orthorhombic-btn-rotate-axis001"),
-  document.getElementById("monoclinic-btn-rotate-axis001")
+  document.getElementById("monoclinic-btn-rotate-axis001"),
+  document.getElementById("trigonal-btn-rotate-axis001"),
+  document.getElementById("triclinic-btn-rotate-axis001"),
+  document.getElementById("hexagonal-btn-rotate-axis001")
+
+
 ]
+CanvasUtils.drawLine(TRIGONAL_DRAWING.canvas, new Vector([-150, 0, 0]), new Vector([150, 0, 0]))
+CanvasUtils.drawLine(TRIGONAL_DRAWING.canvas, new Vector([0, -150, 0]), new Vector([0, 150, 0]))
+CanvasUtils.drawLine(CUBIC_DRAWING.canvas, new Vector([-150, 0, 0]), new Vector([150, 0, 0]))
+CanvasUtils.drawLine(CUBIC_DRAWING.canvas, new Vector([0, -150, 0]), new Vector([0, 150, 0]))
+CanvasUtils.drawLine(MONOCLINIC_DRAWING.canvas, new Vector([-150, 0, 0]), new Vector([150, 0, 0]))
+CanvasUtils.drawLine(MONOCLINIC_DRAWING.canvas, new Vector([0, -150, 0]), new Vector([0, 150, 0]))
+CanvasUtils.drawLine(ORTHORHOMBIC_DRAWING.canvas, new Vector([-150, 0, 0]), new Vector([150, 0, 0]))
+CanvasUtils.drawLine(ORTHORHOMBIC_DRAWING.canvas, new Vector([0, -150, 0]), new Vector([0, 150, 0]))
+CanvasUtils.drawLine(TETRAGONAL_DRAWING.canvas, new Vector([-150, 0, 0]), new Vector([150, 0, 0]))
+CanvasUtils.drawLine(TETRAGONAL_DRAWING.canvas, new Vector([0, -150, 0]), new Vector([0, 150, 0]))
 const figures = {
   cubic: CUBIC_DRAWING,
   tetragonal: TETRAGONAL_DRAWING,
   orthorhombic: ORTHORHOMBIC_DRAWING,
-  monoclinic: MONOCLINIC_DRAWING
+  monoclinic: MONOCLINIC_DRAWING,
+  trigonal: TRIGONAL_DRAWING,
+  hexagonal: HEXAGONAL_DRAWING
 }
 /** @type {LatticeSystemDrawing} */
 let currentFigure = null;
@@ -65,10 +80,14 @@ function drawFigures(canvas, figure, colors, cameraMatrix) {
   CanvasUtils.drawFilledFigure(canvas, view, colors)
   CanvasUtils.drawFigure(canvas, view);
 }
-drawFigures(cubicCanvas, CUBIC_DRAWING.figure, CUBIC_DRAWING.colors, CAMERA_ROTATION_MATRIX);
-drawFigures(tetragonalCanvas, TETRAGONAL_DRAWING.figure, TETRAGONAL_DRAWING.colors, CAMERA_ROTATION_MATRIX);
-drawFigures(orthorhombicCanvas, ORTHORHOMBIC_DRAWING.figure, ORTHORHOMBIC_DRAWING.colors, CAMERA_ROTATION_MATRIX);
-drawFigures(monoclinicCanvas, MONOCLINIC_DRAWING.figure, MONOCLINIC_DRAWING.colors, CAMERA_ROTATION_MATRIX);
+drawFigures(CUBIC_DRAWING.canvas, CUBIC_DRAWING.figure, CUBIC_DRAWING.colors, CAMERA_ROTATION_MATRIX);
+drawFigures(TETRAGONAL_DRAWING.canvas, TETRAGONAL_DRAWING.figure, TETRAGONAL_DRAWING.colors, CAMERA_ROTATION_MATRIX);
+drawFigures(ORTHORHOMBIC_DRAWING.canvas, ORTHORHOMBIC_DRAWING.figure, ORTHORHOMBIC_DRAWING.colors, CAMERA_ROTATION_MATRIX);
+drawFigures(MONOCLINIC_DRAWING.canvas, MONOCLINIC_DRAWING.figure, MONOCLINIC_DRAWING.colors, CAMERA_ROTATION_MATRIX);
+drawFigures(TRIGONAL_DRAWING.canvas, TRIGONAL_DRAWING.figure, TRIGONAL_DRAWING.colors, CAMERA_ROTATION_MATRIX);
+drawFigures(TRICLINIC_DRAWING.canvas, TRICLINIC_DRAWING.figure, TRICLINIC_DRAWING.colors, CAMERA_ROTATION_MATRIX);
+drawFigures(HEXAGONAL_DRAWING.canvas, HEXAGONAL_DRAWING.figure, HEXAGONAL_DRAWING.colors, CAMERA_ROTATION_MATRIX);
+
 document.querySelectorAll('[data-axis]').forEach((button) => {
   button.addEventListener("click", (e) => {
     const axisIndex = Number.parseInt(e.currentTarget.getAttribute("data-axis"));
