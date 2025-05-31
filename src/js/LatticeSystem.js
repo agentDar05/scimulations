@@ -211,191 +211,42 @@ export const orthorhombic = new LatticeSystem(orthorhombicSides, [], [
 // https://www.geogebra.org/calculator/zebbtnsz
 export const monoclinic = new LatticeSystem(monoclinicSides, [], [
   // right side
-  new Matrix([
-    monoclinicPoints.A,
-    monoclinicPoints.B,
-    monoclinicPoints.G,
-    monoclinicPoints.F,
-    monoclinicPoints.A
-  ]),
+  new Matrix([monoclinicPoints.A, monoclinicPoints.B, monoclinicPoints.G, monoclinicPoints.F, monoclinicPoints.A]),
   //back
-  new Matrix([
-    monoclinicPoints.A,
-    monoclinicPoints.F,
-    monoclinicPoints.E,
-    monoclinicPoints.D,
-    monoclinicPoints.A
-  ]),
+  new Matrix([monoclinicPoints.A, monoclinicPoints.F, monoclinicPoints.E, monoclinicPoints.D, monoclinicPoints.A]),
   // bottom
-  new Matrix([
-    monoclinicPoints.A,
-    monoclinicPoints.D,
-    monoclinicPoints.C,
-    monoclinicPoints.B,
-    monoclinicPoints.A,
-  ]),
+  new Matrix([monoclinicPoints.A, monoclinicPoints.D, monoclinicPoints.C, monoclinicPoints.B, monoclinicPoints.A,]),
   //front
-  new Matrix([
-    monoclinicPoints.B,
-    monoclinicPoints.G,
-    monoclinicPoints.H,
-    monoclinicPoints.C,
-    monoclinicPoints.B,
-  ]),
+  new Matrix([monoclinicPoints.B, monoclinicPoints.G, monoclinicPoints.H, monoclinicPoints.C, monoclinicPoints.B]),
   // left side
-  new Matrix([
-    monoclinicPoints.B,
-    monoclinicPoints.C,
-    monoclinicPoints.D,
-    monoclinicPoints.E,
-    monoclinicPoints.H,
-    monoclinicPoints.C,
-  ]),
+  new Matrix([monoclinicPoints.B, monoclinicPoints.C, monoclinicPoints.D, monoclinicPoints.E, monoclinicPoints.H, monoclinicPoints.C]),
   //top
-  new Matrix([
-    monoclinicPoints.C,
-    monoclinicPoints.H,
-    monoclinicPoints.E,
-    monoclinicPoints.F,
-    monoclinicPoints.G,
-    monoclinicPoints.H,
-  ])
+  new Matrix([monoclinicPoints.C, monoclinicPoints.H, monoclinicPoints.E, monoclinicPoints.F, monoclinicPoints.G, monoclinicPoints.H])
 ])
 // https://www.geogebra.org/calculator/eesen4qa
 // https://www.geogebra.org/calculator/mpanwp7h
 export const trigonal = new LatticeSystem(trigonalSides, [], [
-  new Matrix([
-    trigonalPoints.A,// a
-    trigonalPoints.B,// b 
-    trigonalPoints.C,// c 
-    trigonalPoints.D,// d 
-    trigonalPoints.A// a
-  ]),
-  new Matrix([
-    trigonalPoints.A,// a
-    trigonalPoints.H,// h 
-    trigonalPoints.F,// f
-    trigonalPoints.D,// d 
-    trigonalPoints.A,// a
-  ]),
-  new Matrix([
-    trigonalPoints.A,// a
-    trigonalPoints.H,// h 
-    trigonalPoints.E,// e
-    trigonalPoints.B,// b
-  ]),
-  new Matrix([
-    trigonalPoints.B,// b
-    trigonalPoints.E,// e
-    trigonalPoints.G,// g
-    trigonalPoints.C,// c
-  ]),
-  new Matrix([
-    trigonalPoints.C,// c
-    trigonalPoints.G,// g
-    trigonalPoints.F,// f
-    trigonalPoints.D,// d
-  ])
+  new Matrix([trigonalPoints.A, trigonalPoints.B, trigonalPoints.C, trigonalPoints.D, trigonalPoints.A]),
+  new Matrix([trigonalPoints.A, trigonalPoints.H, trigonalPoints.F, trigonalPoints.D, trigonalPoints.A]),
+  new Matrix([trigonalPoints.A, trigonalPoints.H, trigonalPoints.E, trigonalPoints.B]),
+  new Matrix([trigonalPoints.B, trigonalPoints.E, trigonalPoints.G, trigonalPoints.C]),
+  new Matrix([trigonalPoints.C, trigonalPoints.G, trigonalPoints.F, trigonalPoints.D])
 ])
 export const triclinic = new LatticeSystem(triclinicSides, [], [
-  new Matrix([
-    triclinicPoints.A,
-    triclinicPoints.B,
-    triclinicPoints.E,
-    triclinicPoints.C,
-    triclinicPoints.A
-  ]),
-  new Matrix([
-    triclinicPoints.A,
-    triclinicPoints.D,
-    triclinicPoints.F,
-    triclinicPoints.B,
-    triclinicPoints.A
-  ]),
-  new Matrix([
-    triclinicPoints.A,
-    triclinicPoints.D,
-    triclinicPoints.G,
-    triclinicPoints.C
-  ]),
-  new Matrix([
-    triclinicPoints.C,
-    triclinicPoints.G,
-    triclinicPoints.H,
-    triclinicPoints.E
-  ]),
-  new Matrix([
-    triclinicPoints.E,
-    triclinicPoints.H,
-    triclinicPoints.F,
-    triclinicPoints.B
-  ]),
-  new Matrix([
-    triclinicPoints.B,
-    triclinicPoints.F,
-    triclinicPoints.D,
-    triclinicPoints.G,
-    triclinicPoints.H,
-    triclinicPoints.F
-  ])
+  new Matrix([triclinicPoints.A, triclinicPoints.B, triclinicPoints.E, triclinicPoints.C, triclinicPoints.A]),
+  new Matrix([triclinicPoints.A, triclinicPoints.D, triclinicPoints.F, triclinicPoints.B, triclinicPoints.A]),
+  new Matrix([triclinicPoints.A, triclinicPoints.D, triclinicPoints.G, triclinicPoints.C]),
+  new Matrix([triclinicPoints.C, triclinicPoints.G, triclinicPoints.H, triclinicPoints.E]),
+  new Matrix([triclinicPoints.E, triclinicPoints.H, triclinicPoints.F, triclinicPoints.B]),
+  new Matrix([triclinicPoints.B, triclinicPoints.F, triclinicPoints.D, triclinicPoints.G, triclinicPoints.H, triclinicPoints.F])
 ])
 export const hexagonal = new LatticeSystem(hexagonalSides, [], [
-  new Matrix([
-    hexagonalPoints.A,
-    hexagonalPoints.B,
-    hexagonalPoints.C,
-    hexagonalPoints.D,
-    hexagonalPoints.E,
-    hexagonalPoints.F,
-    hexagonalPoints.A
-
-  ]),
-  new Matrix([
-    hexagonalPoints.A,
-    hexagonalPoints.G,
-    hexagonalPoints.H,
-    hexagonalPoints.B,
-    hexagonalPoints.A
-  ]),
-  new Matrix([
-    hexagonalPoints.A,
-    hexagonalPoints.G,
-    hexagonalPoints.L,
-    hexagonalPoints.F
-  ]),
-  new Matrix([
-    hexagonalPoints.F,
-    hexagonalPoints.L,
-    hexagonalPoints.K,
-    hexagonalPoints.E
-  ]),
-  new Matrix([
-    hexagonalPoints.E,
-    hexagonalPoints.K,
-    hexagonalPoints.J,
-    hexagonalPoints.D
-  ]),
-  new Matrix([
-    hexagonalPoints.D,
-    hexagonalPoints.J,
-    hexagonalPoints.I,
-    hexagonalPoints.C,
-  ]),
-  new Matrix([
-    hexagonalPoints.C,
-    hexagonalPoints.I,
-    hexagonalPoints.H,
-    hexagonalPoints.B,
-    hexagonalPoints.C,
-    hexagonalPoints.I,
-  ]),
-  new Matrix([
-    hexagonalPoints.H,
-    hexagonalPoints.G,
-    hexagonalPoints.L,
-    hexagonalPoints.K,
-    hexagonalPoints.J,
-    hexagonalPoints.I,
-    hexagonalPoints.H
-  ])
+  new Matrix([hexagonalPoints.A, hexagonalPoints.B, hexagonalPoints.C, hexagonalPoints.D, hexagonalPoints.E, hexagonalPoints.F, hexagonalPoints.A]),
+  new Matrix([hexagonalPoints.A, hexagonalPoints.G, hexagonalPoints.H, hexagonalPoints.B, hexagonalPoints.A]),
+  new Matrix([hexagonalPoints.A, hexagonalPoints.G, hexagonalPoints.L, hexagonalPoints.F]),
+  new Matrix([hexagonalPoints.F, hexagonalPoints.L, hexagonalPoints.K, hexagonalPoints.E]),
+  new Matrix([hexagonalPoints.E, hexagonalPoints.K, hexagonalPoints.J, hexagonalPoints.D]),
+  new Matrix([hexagonalPoints.D, hexagonalPoints.J, hexagonalPoints.I, hexagonalPoints.C]),
+  new Matrix([hexagonalPoints.C, hexagonalPoints.I, hexagonalPoints.H, hexagonalPoints.B, hexagonalPoints.C, hexagonalPoints.I]),
+  new Matrix([hexagonalPoints.H, hexagonalPoints.G, hexagonalPoints.L, hexagonalPoints.K, hexagonalPoints.J, hexagonalPoints.I, hexagonalPoints.H])
 ])
