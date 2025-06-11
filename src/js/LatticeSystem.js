@@ -1,3 +1,4 @@
+import Canvas2D from "./Canvas2D.js";
 import Matrix from "./Matrix.js";
 import Vector from "./Vector.js"
 class LatticeSystem {
@@ -19,11 +20,51 @@ class LatticeSystem {
   }
 }
 
+class RotationAxisDrawing {
+  /** @type {string} */
+  label;
+  /** @type {Matrix} */
+  rotationAxis;
+  /**@type {number} */
+  scalar
+  constructor(label, rotationAxis, scalar) {
+    this.label = label;
+    this.rotationAxis = rotationAxis;
+    this.scalar = scalar
+  }
+}
+const cubicAxes = [
+  new RotationAxisDrawing("111", new Matrix([new Vector([-1, -1, -1]), new Vector([1, 1, 1])]), 25),
+  new RotationAxisDrawing("-111", new Matrix([new Vector([-1, 1, 1]), new Vector([1, -1, -1])]), 25),
+  new RotationAxisDrawing("1-11", new Matrix([new Vector([1, -1, 1]), new Vector([-1, 1, -1])]), 25),
+  new RotationAxisDrawing("11-1", new Matrix([new Vector([1, 1, -1]), new Vector([-1, -1, 1])]), 25),
+]
+const tetragonalAxes = [
+  new RotationAxisDrawing("010", new Matrix([new Vector([0, 1, 0]), new Vector([0, -1, 0])]), 35)
+]
+const orthorhombicAxes = [
+  new RotationAxisDrawing("100", new Matrix([new Vector([1, 0, 0]), new Vector([-1, 0, 0])]), 35),
+  new RotationAxisDrawing("010", new Matrix([new Vector([0, 1, 0]), new Vector([0, -1, 0])]), 35),
+  new RotationAxisDrawing("001", new Matrix([new Vector([0, 0, 1]), new Vector([0, 0, -1])]), 35)
+]
+const rhombohedralAxes = [
+  new RotationAxisDrawing("100", new Matrix([new Vector([0, 3, 0]), new Vector([0, 0, 2])]), 15)
+]
+const monoclinicAxes = [
+  new RotationAxisDrawing("100", new Matrix([new Vector([0, 0, 1]), new Vector([0, 0, -1])]), 65)
+]
+const triclinicAxes = [
+  new RotationAxisDrawing("100", new Matrix([new Vector([0, 3, 0]), new Vector([0, 0, 2])]), 15)
+]
+const hexagonalAxes = [
+  new RotationAxisDrawing("100", new Matrix([new Vector([0, -1, 0]), new Vector([0, 1, 0])]), 30)
+]
+
 const cubicSides = { x: 50, y: 50, z: 50 };
 const tetragonalSides = { x: 50, y: 70, z: 50 };
 const orthorhombicSides = { x: 50, y: 60, z: 70 };
 const monoclinicSides = { x: 140, y: 52.5, z: 35 }
-const trigonalSides = { x: 60, y: 45, z: 30 }
+const rhombohedralSides = { x: 60, y: 45, z: 30 }
 const triclinicSides = { x: 60, y: 45, z: 30 }
 const hexagonalSides = { x: 30, y: 51.9, z: 45 }
 
@@ -39,16 +80,16 @@ const monoclinicPoints = {
   G: new Vector([0, 1.5, 1]).scale(monoclinicScalar), // G
   H: new Vector([3, 1.5, 1]).scale(monoclinicScalar) // H
 }
-const trigonalScalar = 15;
-const trigonalPoints = {
-  A: new Vector([0, 0, 0]).scale(trigonalScalar), // A
-  B: new Vector([2, 3, 0]).scale(trigonalScalar), // B
-  C: new Vector([4, 0, 0]).scale(trigonalScalar), // C
-  D: new Vector([2, -3, 0]).scale(trigonalScalar), // D
-  E: new Vector([2, 6, 2]).scale(trigonalScalar), // E
-  F: new Vector([2, 0, 2]).scale(trigonalScalar), // F
-  G: new Vector([4, 3, 2]).scale(trigonalScalar), // G
-  H: new Vector([0, 3, 2]).scale(trigonalScalar) // H
+const rhombohedralScalar = 15;
+const rhombohedralPoints = {
+  A: new Vector([0, 0, 0]).scale(rhombohedralScalar), // A
+  B: new Vector([2, 3, 0]).scale(rhombohedralScalar), // B
+  C: new Vector([4, 0, 0]).scale(rhombohedralScalar), // C
+  D: new Vector([2, -3, 0]).scale(rhombohedralScalar), // D
+  E: new Vector([2, 6, 2]).scale(rhombohedralScalar), // E
+  F: new Vector([2, 0, 2]).scale(rhombohedralScalar), // F
+  G: new Vector([4, 3, 2]).scale(rhombohedralScalar), // G
+  H: new Vector([0, 3, 2]).scale(rhombohedralScalar) // H
 }
 const triclinicScalar = 10
 const triclinicPoints = {
@@ -76,7 +117,7 @@ const hexagonalPoints = {
   K: new Vector([0, 3, 3.46]).scale(hexagonalScalar),
   L: new Vector([-1, 3, 1.73]).scale(hexagonalScalar),
 }
-export const cubic = new LatticeSystem(cubicSides, [new Vector([1, 1, 1])], [
+export const cubic = new LatticeSystem(cubicSides, cubicAxes, [
   new Matrix([
     new Vector([0, 0, 0]),
     new Vector([cubicSides.x, 0, 0]),
@@ -120,7 +161,7 @@ export const cubic = new LatticeSystem(cubicSides, [new Vector([1, 1, 1])], [
     new Vector([0, cubicSides.y, 0]),
   ]),
 ]);
-export const tetragonal = new LatticeSystem(tetragonalSides, [], [
+export const tetragonal = new LatticeSystem(tetragonalSides, tetragonalAxes, [
   new Matrix([
     new Vector([0, 0, 0]),
     new Vector([tetragonalSides.x, 0, 0]),
@@ -164,7 +205,7 @@ export const tetragonal = new LatticeSystem(tetragonalSides, [], [
     new Vector([0, tetragonalSides.y, 0]),
   ]),
 ]);
-export const orthorhombic = new LatticeSystem(orthorhombicSides, [], [
+export const orthorhombic = new LatticeSystem(orthorhombicSides, orthorhombicAxes, [
   new Matrix([
     new Vector([0, 0, 0]),
     new Vector([orthorhombicSides.x, 0, 0]),
@@ -209,7 +250,7 @@ export const orthorhombic = new LatticeSystem(orthorhombicSides, [], [
   ]),
 ]);
 // https://www.geogebra.org/calculator/zebbtnsz
-export const monoclinic = new LatticeSystem(monoclinicSides, [], [
+export const monoclinic = new LatticeSystem(monoclinicSides, monoclinicAxes, [
   // right side
   new Matrix([
     monoclinicPoints.A,
@@ -263,41 +304,41 @@ export const monoclinic = new LatticeSystem(monoclinicSides, [], [
 ])
 // https://www.geogebra.org/calculator/eesen4qa
 // https://www.geogebra.org/calculator/mpanwp7h
-export const trigonal = new LatticeSystem(trigonalSides, [], [
+export const rhombohedral = new LatticeSystem(rhombohedralSides, rhombohedralAxes, [
   new Matrix([
-    trigonalPoints.A,// a
-    trigonalPoints.B,// b 
-    trigonalPoints.C,// c 
-    trigonalPoints.D,// d 
-    trigonalPoints.A// a
+    rhombohedralPoints.A,// a
+    rhombohedralPoints.B,// b 
+    rhombohedralPoints.C,// c 
+    rhombohedralPoints.D,// d 
+    rhombohedralPoints.A// a
   ]),
   new Matrix([
-    trigonalPoints.A,// a
-    trigonalPoints.H,// h 
-    trigonalPoints.F,// f
-    trigonalPoints.D,// d 
-    trigonalPoints.A,// a
+    rhombohedralPoints.A,// a
+    rhombohedralPoints.H,// h 
+    rhombohedralPoints.F,// f
+    rhombohedralPoints.D,// d 
+    rhombohedralPoints.A,// a
   ]),
   new Matrix([
-    trigonalPoints.A,// a
-    trigonalPoints.H,// h 
-    trigonalPoints.E,// e
-    trigonalPoints.B,// b
+    rhombohedralPoints.A,// a
+    rhombohedralPoints.H,// h 
+    rhombohedralPoints.E,// e
+    rhombohedralPoints.B,// b
   ]),
   new Matrix([
-    trigonalPoints.B,// b
-    trigonalPoints.E,// e
-    trigonalPoints.G,// g
-    trigonalPoints.C,// c
+    rhombohedralPoints.B,// b
+    rhombohedralPoints.E,// e
+    rhombohedralPoints.G,// g
+    rhombohedralPoints.C,// c
   ]),
   new Matrix([
-    trigonalPoints.C,// c
-    trigonalPoints.G,// g
-    trigonalPoints.F,// f
-    trigonalPoints.D,// d
+    rhombohedralPoints.C,// c
+    rhombohedralPoints.G,// g
+    rhombohedralPoints.F,// f
+    rhombohedralPoints.D,// d
   ])
 ])
-export const triclinic = new LatticeSystem(triclinicSides, [], [
+export const triclinic = new LatticeSystem(triclinicSides, triclinicAxes, [
   new Matrix([
     triclinicPoints.A,
     triclinicPoints.B,
@@ -339,7 +380,7 @@ export const triclinic = new LatticeSystem(triclinicSides, [], [
     triclinicPoints.F
   ])
 ])
-export const hexagonal = new LatticeSystem(hexagonalSides, [], [
+export const hexagonal = new LatticeSystem(hexagonalSides, hexagonalAxes, [
   new Matrix([
     hexagonalPoints.A,
     hexagonalPoints.B,
@@ -399,3 +440,10 @@ export const hexagonal = new LatticeSystem(hexagonalSides, [], [
     hexagonalPoints.H
   ])
 ])
+const angle = Math.PI * (2 / 3)
+const cos = Math.cos(angle)
+const sin = Math.sin(angle)
+
+const rhombohedralE1 = new Vector(1, 0, 0);
+const rhombohedralE2 = new Vector(cos, sin, 0);
+const rhombohedralE3 = new Vector(cos, (cos - Math.pow(cos, 2)) / sin, (Math.sqrt(1 - 3 * Math.pow(cos, 2) + 2 * Math.pow(cos, 3))) / sin);

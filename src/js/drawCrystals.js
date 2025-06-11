@@ -2,9 +2,7 @@ import Vector from "./Vector.js";
 import StaticMath from "./StaticMath.js";
 import CanvasUtils from "./CanvasUtils.js";
 import Rotate from "./Rotate.js";
-import {CUBIC_DRAWING, MONOCLINIC_DRAWING, ORTHORHOMBIC_DRAWING, TETRAGONAL_DRAWING, TRIGONAL_DRAWING, TRICLINIC_DRAWING, HEXAGONAL_DRAWING} from "./LatticeSystemDrawing.js";
-import { hexagonal } from "./LatticeSystem.js";
-
+import { CUBIC_DRAWING, MONOCLINIC_DRAWING, ORTHORHOMBIC_DRAWING, TETRAGONAL_DRAWING, RHOMBOHEDRAL_DRAWING, TRICLINIC_DRAWING, HEXAGONAL_DRAWING } from "./LatticeSystemDrawing.js";
 const ANGULAR_SPEED = 0.005;
 // const CAMERA_ROTATION_MATRIX = Rotate.getRotationMatrix(0, 0, 0);
 const CAMERA_ROTATION_MATRIX = Rotate.getRotationMatrix(0.4, 0.4, 0);
@@ -19,14 +17,12 @@ const ARRAY_OF_BUTTONS = [
   document.getElementById("orthorhombic-btn-rotate-axis010"),
   document.getElementById("orthorhombic-btn-rotate-axis001"),
   document.getElementById("monoclinic-btn-rotate-axis001"),
-  document.getElementById("trigonal-btn-rotate-axis001"),
+  document.getElementById("rhombohedral-btn-rotate-axis001"),
   document.getElementById("triclinic-btn-rotate-axis001"),
   document.getElementById("hexagonal-btn-rotate-axis001")
-
-
 ]
-CanvasUtils.drawLine(TRIGONAL_DRAWING.canvas, new Vector([-150, 0, 0]), new Vector([150, 0, 0]))
-CanvasUtils.drawLine(TRIGONAL_DRAWING.canvas, new Vector([0, -150, 0]), new Vector([0, 150, 0]))
+CanvasUtils.drawLine(RHOMBOHEDRAL_DRAWING.canvas, new Vector([-150, 0, 0]), new Vector([150, 0, 0]))
+CanvasUtils.drawLine(RHOMBOHEDRAL_DRAWING.canvas, new Vector([0, -150, 0]), new Vector([0, 150, 0]))
 CanvasUtils.drawLine(CUBIC_DRAWING.canvas, new Vector([-150, 0, 0]), new Vector([150, 0, 0]))
 CanvasUtils.drawLine(CUBIC_DRAWING.canvas, new Vector([0, -150, 0]), new Vector([0, 150, 0]))
 CanvasUtils.drawLine(MONOCLINIC_DRAWING.canvas, new Vector([-150, 0, 0]), new Vector([150, 0, 0]))
@@ -40,7 +36,8 @@ const figures = {
   tetragonal: TETRAGONAL_DRAWING,
   orthorhombic: ORTHORHOMBIC_DRAWING,
   monoclinic: MONOCLINIC_DRAWING,
-  trigonal: TRIGONAL_DRAWING,
+  rhombohedral: RHOMBOHEDRAL_DRAWING,
+  triclinic: TRICLINIC_DRAWING,
   hexagonal: HEXAGONAL_DRAWING
 }
 /** @type {LatticeSystemDrawing} */
@@ -84,7 +81,7 @@ drawFigures(CUBIC_DRAWING.canvas, CUBIC_DRAWING.figure, CUBIC_DRAWING.colors, CA
 drawFigures(TETRAGONAL_DRAWING.canvas, TETRAGONAL_DRAWING.figure, TETRAGONAL_DRAWING.colors, CAMERA_ROTATION_MATRIX);
 drawFigures(ORTHORHOMBIC_DRAWING.canvas, ORTHORHOMBIC_DRAWING.figure, ORTHORHOMBIC_DRAWING.colors, CAMERA_ROTATION_MATRIX);
 drawFigures(MONOCLINIC_DRAWING.canvas, MONOCLINIC_DRAWING.figure, MONOCLINIC_DRAWING.colors, CAMERA_ROTATION_MATRIX);
-drawFigures(TRIGONAL_DRAWING.canvas, TRIGONAL_DRAWING.figure, TRIGONAL_DRAWING.colors, CAMERA_ROTATION_MATRIX);
+drawFigures(RHOMBOHEDRAL_DRAWING.canvas, RHOMBOHEDRAL_DRAWING.figure, RHOMBOHEDRAL_DRAWING.colors, CAMERA_ROTATION_MATRIX);
 drawFigures(TRICLINIC_DRAWING.canvas, TRICLINIC_DRAWING.figure, TRICLINIC_DRAWING.colors, CAMERA_ROTATION_MATRIX);
 drawFigures(HEXAGONAL_DRAWING.canvas, HEXAGONAL_DRAWING.figure, HEXAGONAL_DRAWING.colors, CAMERA_ROTATION_MATRIX);
 
@@ -139,9 +136,9 @@ function drawFrame() {
 requestAnimationFrame(() => drawFrame());
 
 function computeRotationMatrix(rotationAxis) {
-    const rotationMatrix = Rotate.getRotationMatrix(ANGULAR_SPEED, 0, 0);
-    const angleToXY = StaticMath.angleToPlaneXY(rotationAxis);
-    const angleToXZ = StaticMath.angleToPlaneXZ(Rotate.rotateVec(rotationAxis, 0, angleToXY, 0));
-    const alignWithXAxis = Rotate.getMatrix(0, angleToXY, angleToXZ);
-    return alignWithXAxis.rotateInverse.matrixMultiply(rotationMatrix.matrixMultiply(alignWithXAxis.rotate));
+  const rotationMatrix = Rotate.getRotationMatrix(ANGULAR_SPEED, 0, 0);
+  const angleToXY = StaticMath.angleToPlaneXY(rotationAxis);
+  const angleToXZ = StaticMath.angleToPlaneXZ(Rotate.rotateVec(rotationAxis, 0, angleToXY, 0));
+  const alignWithXAxis = Rotate.getMatrix(0, angleToXY, angleToXZ);
+  return alignWithXAxis.rotateInverse.matrixMultiply(rotationMatrix.matrixMultiply(alignWithXAxis.rotate));
 }
