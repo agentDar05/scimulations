@@ -48,7 +48,7 @@ const orthorhombicAxes = [
   new RotationAxisDrawing("001", new Matrix([new Vector([0, 0, 1]), new Vector([0, 0, -1])]), 35)
 ]
 const rhombohedralAxes = [
-  new RotationAxisDrawing("100", new Matrix([new Vector([0, 3, 0]), new Vector([0, 0, 2])]), 15)
+  new RotationAxisDrawing("100", new Matrix([new Vector([1, 0, 0]), new Vector([-1, 0, 0])]), 15)
 ]
 const monoclinicAxes = [
   new RotationAxisDrawing("100", new Matrix([new Vector([0, 0, 1]), new Vector([0, 0, -1])]), 65)
@@ -81,16 +81,36 @@ const monoclinicPoints = {
   H: new Vector([3, 1.5, 1]).scale(monoclinicScalar) // H
 }
 const rhombohedralScalar = 15;
+const angle = Math.PI * (2 / 3)
+const cos = Math.cos(angle)
+const sin = Math.sin(angle)
+/** @type {Vector} */
+const rhombohedralE1 = new Vector([1, 0, 0]); //x
+/** @type {Vector} */
+const rhombohedralE2 = new Vector([cos, sin, 0]); // y
+/** @type {Vector} */
+const rhombohedralE3 = new Vector([cos, (cos - Math.pow(cos, 2)) / sin, (Math.sqrt(1 - 3 * Math.pow(cos, 2) + 2 * Math.pow(cos, 3))) / sin]); // z
+
 const rhombohedralPoints = {
-  A: new Vector([0, 0, 0]).scale(rhombohedralScalar), // A
-  B: new Vector([2, 3, 0]).scale(rhombohedralScalar), // B
-  C: new Vector([4, 0, 0]).scale(rhombohedralScalar), // C
-  D: new Vector([2, -3, 0]).scale(rhombohedralScalar), // D
-  E: new Vector([2, 6, 2]).scale(rhombohedralScalar), // E
-  F: new Vector([2, 0, 2]).scale(rhombohedralScalar), // F
-  G: new Vector([4, 3, 2]).scale(rhombohedralScalar), // G
-  H: new Vector([0, 3, 2]).scale(rhombohedralScalar) // H
+  A: rhombohedralE1.scale(rhombohedralScalar), // A
+  B: rhombohedralE1.add(rhombohedralE2).scale(rhombohedralScalar),
+  C: rhombohedralE2.scale(rhombohedralScalar),
+  D: new Vector([0, 0, 0]).scale(rhombohedralScalar), // D
+  E: rhombohedralE1.add(rhombohedralE2).add(rhombohedralE3).scale(rhombohedralScalar), // E
+  F: rhombohedralE3.scale(rhombohedralScalar), // F
+  G: rhombohedralE2.add(rhombohedralE3).scale(rhombohedralScalar), // G
+  H: rhombohedralE1.add(rhombohedralE3).scale(rhombohedralScalar) // H
 }
+// const rhombohedralPoints = {
+//   A: new Vector([0, 0, 0]).scale(rhombohedralScalar), // A
+//   B: new Vector([2, 3, 0]).scale(rhombohedralScalar), // B
+//   C: new Vector([4, 0, 0]).scale(rhombohedralScalar), // C
+//   D: new Vector([2, -3, 0]).scale(rhombohedralScalar), // D
+//   E: new Vector([2, 6, 2]).scale(rhombohedralScalar), // E
+//   F: new Vector([2, 0, 2]).scale(rhombohedralScalar), // F
+//   G: new Vector([4, 3, 2]).scale(rhombohedralScalar), // G
+//   H: new Vector([0, 3, 2]).scale(rhombohedralScalar) // H
+// }
 const triclinicScalar = 10
 const triclinicPoints = {
   A: new Vector([0, 0, 0]).scale(triclinicScalar), // A
@@ -440,10 +460,3 @@ export const hexagonal = new LatticeSystem(hexagonalSides, hexagonalAxes, [
     hexagonalPoints.H
   ])
 ])
-const angle = Math.PI * (2 / 3)
-const cos = Math.cos(angle)
-const sin = Math.sin(angle)
-
-const rhombohedralE1 = new Vector(1, 0, 0);
-const rhombohedralE2 = new Vector(cos, sin, 0);
-const rhombohedralE3 = new Vector(cos, (cos - Math.pow(cos, 2)) / sin, (Math.sqrt(1 - 3 * Math.pow(cos, 2) + 2 * Math.pow(cos, 3))) / sin);
