@@ -79,8 +79,8 @@ const monoclinicPoints = {
   G: new Vector([0, 1.5, 1]).scale(monoclinicScalar), // G
   H: new Vector([3, 1.5, 1]).scale(monoclinicScalar) // H
 }
-const rhombohedralScalar = 15;
-const angle = Math.PI * (2 / 3)
+const rhombohedralScalar = 55;
+const angle = Math.PI * (1 / 3)
 const cos = Math.cos(angle)
 const sin = Math.sin(angle)
 /** @type {Vector} */
@@ -101,16 +101,7 @@ const rhombohedralPoints = {
   H: rhombohedralE1.add(rhombohedralE3).scale(rhombohedralScalar) // H
 }
 const rhombohedralSides = {x: rhombohedralPoints.E.get(0)/2, y: rhombohedralPoints.E.get(1)/2, z: rhombohedralPoints.E.get(2)/2};
-// const rhombohedralPoints = {
-//   A: new Vector([0, 0, 0]).scale(rhombohedralScalar), // A
-//   B: new Vector([2, 3, 0]).scale(rhombohedralScalar), // B
-//   C: new Vector([4, 0, 0]).scale(rhombohedralScalar), // C
-//   D: new Vector([2, -3, 0]).scale(rhombohedralScalar), // D
-//   E: new Vector([2, 6, 2]).scale(rhombohedralScalar), // E
-//   F: new Vector([2, 0, 2]).scale(rhombohedralScalar), // F
-//   G: new Vector([4, 3, 2]).scale(rhombohedralScalar), // G
-//   H: new Vector([0, 3, 2]).scale(rhombohedralScalar) // H
-// }
+
 const triclinicScalar = 10
 const triclinicPoints = {
   A: new Vector([0, 0, 0]).scale(triclinicScalar), // A
