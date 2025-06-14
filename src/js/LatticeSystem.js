@@ -64,7 +64,6 @@ const cubicSides = { x: 50, y: 50, z: 50 };
 const tetragonalSides = { x: 50, y: 70, z: 50 };
 const orthorhombicSides = { x: 50, y: 60, z: 70 };
 const monoclinicSides = { x: 140, y: 52.5, z: 35 }
-const rhombohedralSides = { x: 60, y: 45, z: 30 }
 const triclinicSides = { x: 60, y: 45, z: 30 }
 const hexagonalSides = { x: 30, y: 51.9, z: 45 }
 
@@ -101,6 +100,7 @@ const rhombohedralPoints = {
   G: rhombohedralE2.add(rhombohedralE3).scale(rhombohedralScalar), // G
   H: rhombohedralE1.add(rhombohedralE3).scale(rhombohedralScalar) // H
 }
+const rhombohedralSides = {x: rhombohedralPoints.E.get(0)/2, y: rhombohedralPoints.E.get(1)/2, z: rhombohedralPoints.E.get(2)/2};
 // const rhombohedralPoints = {
 //   A: new Vector([0, 0, 0]).scale(rhombohedralScalar), // A
 //   B: new Vector([2, 3, 0]).scale(rhombohedralScalar), // B
