@@ -61,7 +61,7 @@ function changeButtonStatus(arrayOfButtons, status) {
  * @param {Matrix} cameraRotation
  * @return {Matrix}
  */
-function leanRotationAxis(matrix, cameraRotation, scalar) {
+function leanRotationAxis(matrix, cameraRotation, scalar) {  
   return Rotate.multiplyByArrayOfMatrices([matrix.numberMultiply(scalar)], cameraRotation)[0];
 }
 

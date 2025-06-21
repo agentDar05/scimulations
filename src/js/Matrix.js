@@ -19,7 +19,6 @@ export default class Matrix {
     const cols = new Matrix(rows);
     return cols.transpose();
   }
-
   /**
    *
    * @param {number[][]} rows
@@ -61,6 +60,14 @@ export default class Matrix {
    */
   asArray() {
     return this.vectors;
+  }
+  move(center) {
+    const arr = [];
+    for (let v = 0; v < this.vectors.length; v++) {
+      const currVec = this.getCol(v);
+      arr.push(currVec.subtract(center));
+    }
+    return new Matrix(arr)
   }
   /**
    *
