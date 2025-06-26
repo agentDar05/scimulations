@@ -62,12 +62,21 @@ const triclinicCanvas = new Canvas2D(
 const hexagonalCanvas = new Canvas2D(
     document.querySelector(".rotate-hexagonal"), { width: CANVAS_WIDTH, height: CANVAS_HEIGHT }
 );
+// const color = "#66adff78";   // light blue with some transparency
+// const color = "#D3D3D3CC" // dark gray with some transparency
+const color = "#ffff"
+// const color = "#CCCCCC55"; // light gray with some transparency
+// const color = "#66CCFF44" // light blue with some transparency
+// const color = "#AA88FF44" // light purple with some transparency
+// const color = "#88FFCC44" // light green with some transparency
+
+
 export const CUBIC_DRAWING = new LatticeSystemDrawing(
     cubic,
     cubic.rotationAxes,
     Math.PI * (2 / 3),
     cubicCanvas,
-    ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",]
+    [color, color, color, color, color, color]
 
 
 );
@@ -76,7 +85,7 @@ export const TETRAGONAL_DRAWING = new LatticeSystemDrawing(
     tetragonal.rotationAxes,
     Math.PI * (1 / 2),
     tetragonalCanvas,
-    ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",]
+    [color, color, color, color, color, color, color,]
 
 )
 export const ORTHORHOMBIC_DRAWING = new LatticeSystemDrawing(
@@ -84,7 +93,7 @@ export const ORTHORHOMBIC_DRAWING = new LatticeSystemDrawing(
     orthorhombic.rotationAxes,
     Math.PI,
     orthorhombicCanvas,
-    ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",]
+    [color, color, color, color, color, color, color,]
 
 )
 export const MONOCLINIC_DRAWING = new LatticeSystemDrawing(
@@ -92,7 +101,7 @@ export const MONOCLINIC_DRAWING = new LatticeSystemDrawing(
     monoclinic.rotationAxes,
     Math.PI,
     monoclinicCanvas,
-    ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",]
+    [color, color, color, color, color, color, color,]
 
 )
 export const RHOMBOHEDRAL_DRAWING = new LatticeSystemDrawing(
@@ -100,20 +109,20 @@ export const RHOMBOHEDRAL_DRAWING = new LatticeSystemDrawing(
     rhombohedral.rotationAxes,
     Math.PI * (2 / 3),
     rhombohedralCanvas,
-    ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",]
+    [color, color, color, color, color, color, color,]
 
 )
 export const TRICLINIC_DRAWING = new LatticeSystemDrawing(
     triclinic, 
     triclinic.rotationAxes,
-    Math.PI,
+    Math.PI * 2,
     triclinicCanvas,
-    ["transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent",]
+    [color, color, color, color, color, color, color,]
 )
 export const HEXAGONAL_DRAWING = new LatticeSystemDrawing(
     hexagonal,
     hexagonal.rotationAxes,
     Math.PI/3,
     hexagonalCanvas,
-    ["transparent", "transparent", "transparent", "transparent", "transparent", "transparent", "red", "transparent"]
+    [color, color, color, color, color, color, color, color]
 )

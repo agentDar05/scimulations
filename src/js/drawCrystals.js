@@ -21,16 +21,6 @@ const ARRAY_OF_BUTTONS = [
   document.getElementById("triclinic-btn-rotate-axis001"),
   document.getElementById("hexagonal-btn-rotate-axis001")
 ]
-CanvasUtils.drawLine(RHOMBOHEDRAL_DRAWING.canvas, new Vector([-150, 0, 0]), new Vector([150, 0, 0]))
-CanvasUtils.drawLine(RHOMBOHEDRAL_DRAWING.canvas, new Vector([0, -150, 0]), new Vector([0, 150, 0]))
-CanvasUtils.drawLine(CUBIC_DRAWING.canvas, new Vector([-150, 0, 0]), new Vector([150, 0, 0]))
-CanvasUtils.drawLine(CUBIC_DRAWING.canvas, new Vector([0, -150, 0]), new Vector([0, 150, 0]))
-CanvasUtils.drawLine(MONOCLINIC_DRAWING.canvas, new Vector([-150, 0, 0]), new Vector([150, 0, 0]))
-CanvasUtils.drawLine(MONOCLINIC_DRAWING.canvas, new Vector([0, -150, 0]), new Vector([0, 150, 0]))
-CanvasUtils.drawLine(ORTHORHOMBIC_DRAWING.canvas, new Vector([-150, 0, 0]), new Vector([150, 0, 0]))
-CanvasUtils.drawLine(ORTHORHOMBIC_DRAWING.canvas, new Vector([0, -150, 0]), new Vector([0, 150, 0]))
-CanvasUtils.drawLine(TETRAGONAL_DRAWING.canvas, new Vector([-150, 0, 0]), new Vector([150, 0, 0]))
-CanvasUtils.drawLine(TETRAGONAL_DRAWING.canvas, new Vector([0, -150, 0]), new Vector([0, 150, 0]))
 const figures = {
   cubic: CUBIC_DRAWING,
   tetragonal: TETRAGONAL_DRAWING,
@@ -94,7 +84,7 @@ document.querySelectorAll('[data-axis]').forEach((button) => {
     rotationMatrix = computeRotationMatrix(currentFigure.currentRotationAxis.rotationAxis.getCol(1))
     currentFigure.currentVisibleAxis = currentFigure.rotationAxes[axisIndex];
     drawFrame()
-  })
+  });
   button.addEventListener("mouseover", (e) => {
     let figureId = e.currentTarget.dataset.figure
     currentFigure = figures[figureId]
@@ -108,7 +98,7 @@ document.querySelectorAll('[data-axis]').forEach((button) => {
     currentFigure.currentVisibleAxis = null;
     drawFrame()
   });
-})
+});
 changeButtonStatus(ARRAY_OF_BUTTONS, false)
 function drawFrame() {
   if (currentFigure) {

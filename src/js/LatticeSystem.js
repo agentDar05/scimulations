@@ -47,7 +47,7 @@ const orthorhombicSides = { x: 50, y: 60, z: 70 };
 const monoclinicSides = { x: 140, y: 52.5, z: 35 }
 const triclinicSides = { x: 60, y: 45, z: 30 }
 const hexagonalSides = { x: 30, y: 51.9, z: 45 }
-const rhombohedralSides = { x: rhombohedralPoints.E.get(0) / 2, y: rhombohedralPoints.E.get(1) / 2, z: rhombohedralPoints.E.get(2) / 2 };
+const rhombohedralSides = { x: rhombohedralPoints.E.get(0), y: rhombohedralPoints.E.get(1), z: rhombohedralPoints.E.get(2)};
 const monoclinicScalar = 35;
 
 const monoclinicPoints = {
@@ -115,14 +115,14 @@ const orthorhombicAxes = [
   new RotationAxisDrawing("001", new Matrix([new Vector([0, 0, 1]), new Vector([0, 0, -1])]), 35)
 ]
 const rhombohedralAxes = [
-  new RotationAxisDrawing("100", new Matrix([rhombohedralPoints.D, rhombohedralPoints.E]).move(new Vector([rhombohedralSides.x / 2, rhombohedralSides.y / 2, rhombohedralSides.z / 2])), 1)
+  new RotationAxisDrawing("111", new Matrix([rhombohedralPoints.D, rhombohedralPoints.E]).move(new Vector([rhombohedralSides.x / 2, rhombohedralSides.y / 2, rhombohedralSides.z / 2])), 1)
 ]
 
 const monoclinicAxes = [
-  new RotationAxisDrawing("100", new Matrix([new Vector([0, 0, 1]), new Vector([0, 0, -1])]), 65)
+  new RotationAxisDrawing("001", new Matrix([new Vector([0, 0, 1]), new Vector([0, 0, -1])]), 65)
 ]
 const triclinicAxes = [
-  new RotationAxisDrawing("100", new Matrix([new Vector([0, 3, 0]), new Vector([0, 0, 2])]), 15)
+  new RotationAxisDrawing("010", new Matrix([new Vector([0, 1, 0]), new Vector([0, -1, 0])]), 25)
 ]
 const hexagonalAxes = [
   new RotationAxisDrawing("100", new Matrix([new Vector([0, -1, 0]), new Vector([0, 1, 0])]), 30)
@@ -164,12 +164,6 @@ export const cubic = new LatticeSystem(cubicSides, cubicAxes, [
     new Vector([cubicSides.x, 0, cubicSides.z]),
     new Vector([cubicSides.x, 0, 0]),
   ]),
-  new Matrix([
-    new Vector([cubicSides.x, cubicSides.y, 0]),
-    new Vector([cubicSides.x, cubicSides.y, cubicSides.z]),
-    new Vector([0, cubicSides.y, cubicSides.z]),
-    new Vector([0, cubicSides.y, 0]),
-  ]),
 ]);
 export const tetragonal = new LatticeSystem(tetragonalSides, tetragonalAxes, [
   new Matrix([
@@ -208,12 +202,7 @@ export const tetragonal = new LatticeSystem(tetragonalSides, tetragonalAxes, [
     new Vector([tetragonalSides.x, 0, tetragonalSides.z]),
     new Vector([tetragonalSides.x, 0, 0]),
   ]),
-  new Matrix([
-    new Vector([tetragonalSides.x, tetragonalSides.y, 0]),
-    new Vector([tetragonalSides.x, tetragonalSides.y, tetragonalSides.z]),
-    new Vector([0, tetragonalSides.y, tetragonalSides.z]),
-    new Vector([0, tetragonalSides.y, 0]),
-  ]),
+
 ]);
 export const orthorhombic = new LatticeSystem(orthorhombicSides, orthorhombicAxes, [
   new Matrix([
@@ -252,12 +241,7 @@ export const orthorhombic = new LatticeSystem(orthorhombicSides, orthorhombicAxe
     new Vector([orthorhombicSides.x, 0, orthorhombicSides.z]),
     new Vector([orthorhombicSides.x, 0, 0]),
   ]),
-  new Matrix([
-    new Vector([orthorhombicSides.x, orthorhombicSides.y, 0]),
-    new Vector([orthorhombicSides.x, orthorhombicSides.y, orthorhombicSides.z]),
-    new Vector([0, orthorhombicSides.y, orthorhombicSides.z]),
-    new Vector([0, orthorhombicSides.y, 0]),
-  ]),
+
 ]);
 // https://www.geogebra.org/calculator/zebbtnsz
 export const monoclinic = new LatticeSystem(monoclinicSides, monoclinicAxes, [
@@ -346,6 +330,14 @@ export const rhombohedral = new LatticeSystem(rhombohedralSides, rhombohedralAxe
     rhombohedralPoints.G,// g
     rhombohedralPoints.F,// f
     rhombohedralPoints.D,// d
+  ]),
+  new Matrix([
+    rhombohedralPoints.D,// d
+    rhombohedralPoints.F,// f
+    rhombohedralPoints.H,// h
+    rhombohedralPoints.E,// e
+    rhombohedralPoints.G,// g
+    rhombohedralPoints.F,// f
   ])
 ])
 export const triclinic = new LatticeSystem(triclinicSides, triclinicAxes, [
