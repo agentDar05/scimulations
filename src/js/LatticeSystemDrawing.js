@@ -64,10 +64,10 @@ const hexagonalCanvas = new Canvas2D(
 );
 // const color = "#66adff78";   // light blue with some transparency
 // const color = "#D3D3D3CC" // dark gray with some transparency
-const color = "#ffff"
+// const color = "#ffff"
 // const color = "#CCCCCC55"; // light gray with some transparency
 // const color = "#66CCFF44" // light blue with some transparency
-// const color = "#AA88FF44" // light purple with some transparency
+const color = "#AA88FF44" // light purple with some transparency
 // const color = "#88FFCC44" // light green with some transparency
 
 
